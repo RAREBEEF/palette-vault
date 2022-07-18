@@ -3,7 +3,7 @@ import { paletteType, reduxStateType } from "../types";
 import styles from "./App.module.scss";
 import New from "../pages/New";
 import Palettes from "../pages/Palettes";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Nav from "./Nav";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { firebase } from "../fb";
@@ -63,12 +63,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/" element={<Palettes palettes={palettes} />} />
         </Routes>
-        <div className={styles.nav}>
-          <Link to="/" className={styles.logo}>
-            <h1>COLOR VAULT</h1>
-          </Link>
-          <Nav />
-        </div>
+        <Nav />
       </Router>
     </div>
   );

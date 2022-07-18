@@ -1,44 +1,49 @@
 @import "../var.scss";
 
-.container:not(.home) {
+.container {
+  padding-top: 120px;
+  min-height: 100vh;
   position: relative;
   display: flex;
   flex-direction: column;
   width: calc(100% - 40px);
   max-width: 1300px;
+  min-width: $minWidth;
   margin: {
     left: 20px;
     right: 20px;
+  }
+  padding: {
     bottom: 20px;
   }
-}
 
-.container {
-  .btn--back {
-    position: absolute;
-    top: 0;
-    left: 0;
-    color: gray;
-    transition: color 0.2s;
+  .header-wrapper {
     margin: {
-      left: 10px;
+      top: 25px;
     }
-    &:hover {
-      color: lightgray;
+    .btn--back {
+      color: gray;
+      transition: color 0.2s;
+      margin: {
+        left: 10px;
+      }
+      &:hover {
+        color: lightgray;
+      }
     }
-  }
 
-  .header {
-    color: gray;
-    padding: {
-      left: 10px;
-      right: 10px;
-      top: 20px;
-      bottom: 20px;
-    }
-    font: {
-      size: 23px;
-      weight: 700;
+    .header {
+      color: gray;
+      padding: {
+        left: 10px;
+        right: 10px;
+        top: 10px;
+        bottom: 20px;
+      }
+      font: {
+        size: 23px;
+        weight: 700;
+      }
     }
   }
 }
@@ -57,5 +62,38 @@
   white-space: pre-line;
   font: {
     size: 16px;
+  }
+}
+
+.footer {
+  height: 30px;
+  text-align: center;
+  margin: {
+    top: 50px;
+  }
+  font: {
+    size: 13px;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .container {
+    padding-top: 100px;
+    .header-wrapper {
+      margin: {
+        top: 10px;
+      }
+    }
+  }
+
+  .footer {
+    height: 15px;
+    text-align: center;
+    margin: {
+      top: 20px;
+    }
+    font: {
+      size: 13px;
+    }
   }
 }

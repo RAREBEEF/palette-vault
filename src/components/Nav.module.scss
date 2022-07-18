@@ -1,16 +1,28 @@
 @import "../var.scss";
 
 .container {
-  background-color: white;
+  width: 100%;
+  min-width: $minWidth;
+  position: fixed;
+  top: 0;
   display: flex;
-  flex-grow: 1;
-  height: 50px;
-  justify-content: flex-end;
-  gap: 30px;
   align-items: center;
+  flex-grow: 1;
+  gap: 30px;
+  background-color: white;
   color: black;
+  padding: 30px 20px;
+  border-bottom: 0.5px solid lightgray;
+
   font: {
     weight: 700;
+  }
+
+  .wrapper-not-logo {
+    flex-grow: 1;
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
   }
 
   .item {
@@ -24,9 +36,22 @@
       color: $theme;
     }
 
-    &:not(.new) {
+    &:not(.new, .logo) {
       &:hover {
         color: gray;
+      }
+    }
+
+    &.logo {
+      color: $theme;
+      height: 50px;
+      display: inline-flex;
+      align-items: center;
+      max-width: 110px;
+      text-align: center;
+      font: {
+        size: 35px;
+        weight: 900;
       }
     }
 
@@ -46,10 +71,18 @@
 @media screen and (max-width: 350px) {
   .container {
     gap: 15px;
+    padding: 20px 10px;
+
+    .wrapper-not-logo {
+      gap: 10px;
+    }
 
     .item {
       padding: 5px;
-      font: {
+      &.logo {
+        font: {
+          size: 30px;
+        }
       }
     }
   }

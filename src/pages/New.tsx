@@ -87,11 +87,14 @@ const New: React.FC<NewPropsType> = ({ setPalettes }) => {
 
   return (
     <form className={styles.container} onSubmit={onSubmit}>
-      <Link to="/" className={styles["btn--back"]}>
-        {`<`} 홈으로
-      </Link>
-      <h2 className={styles.header}>팔레트 생성하기</h2>
-      <section>
+      <section className={styles["header-wrapper"]}>
+        <Link to="/" className={styles["btn--back"]}>
+          {`<`} 홈으로
+        </Link>
+        <h2 className={styles.header}>팔레트 생성하기</h2>
+      </section>
+
+      <section className={styles.main}>
         <input
           className={styles["input--title"]}
           value={paletteName}
@@ -140,15 +143,17 @@ const New: React.FC<NewPropsType> = ({ setPalettes }) => {
             onChange={onColorValueChange}
             placeholder={"#000000 or 0,0,0"}
           />
-
           <Button text="색상 추가" onClick={onAddColor} />
         </div>
       </section>
 
-      <div className={styles["submit-wrapper"]}>
+      <section className={styles["submit-wrapper"]}>
         <Button text="팔레트 저장하기" />
         <Button text="초기화" onClick={onInitClick} classes={["New__init"]} />
-      </div>
+      </section>
+      <footer className={styles.footer}>
+        &copy; {new Date().getFullYear()}. RAREBEEF All Rights Reserved.
+      </footer>
     </form>
   );
 };

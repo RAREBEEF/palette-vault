@@ -17,36 +17,48 @@ const Nav = () => {
       location.pathname !== "/new"
     ) {
       navigate("/", { replace: true });
-    } else if (
+    } /* else if (
       !isLogin &&
       (location.pathname === "/new" || location.pathname === "/profile")
     ) {
       navigate("/login", { replace: true });
     } else if (isLogin && location.pathname === "/login") {
       navigate("/", { replace: true });
-    }
+    } */
   }, [isLogin, location.pathname, navigate]);
 
   return (
     <nav className={styles.container}>
       <NavLink
-        to="/new"
+        to="/"
         className={({ isActive }: any): string =>
           isActive
-            ? classNames(styles.active, styles.item, styles.new)
-            : classNames(styles.item, styles.new)
+            ? classNames(styles.active, styles.item, styles.logo)
+            : classNames(styles.item, styles.logo)
         }
       >
-        새 팔레트
+        <h1>COLOR VAULT</h1>
       </NavLink>
-      <NavLink
-        to="/profile"
-        className={({ isActive }: any): string =>
-          isActive ? classNames(styles.active, styles.item) : styles.item
-        }
-      >
-        프로필
-      </NavLink>
+      <div className={styles["wrapper-not-logo"]}>
+        <NavLink
+          to="/new"
+          className={({ isActive }: any): string =>
+            isActive
+              ? classNames(styles.active, styles.item, styles.new)
+              : classNames(styles.item, styles.new)
+          }
+        >
+          새 팔레트
+        </NavLink>
+        <NavLink
+          to="/profile"
+          className={({ isActive }: any): string =>
+            isActive ? classNames(styles.active, styles.item) : styles.item
+          }
+        >
+          프로필
+        </NavLink>
+      </div>
     </nav>
   );
 };

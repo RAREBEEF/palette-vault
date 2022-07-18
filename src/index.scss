@@ -1,8 +1,10 @@
+@import "./var.scss";
+
 * {
   box-sizing: border-box;
 }
 body {
-  min-width: 280px;
+  min-width: $minWidth;
 }
 input {
   &::placeholder {
