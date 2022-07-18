@@ -7,7 +7,7 @@ import styles from "./Nav.module.scss";
 const Nav = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { isLogin } = useSelector((state: any) => state);
+  const { isLoggedIn } = useSelector((state: any) => state);
 
   useEffect(() => {
     if (
@@ -17,15 +17,15 @@ const Nav = () => {
       location.pathname !== "/new"
     ) {
       navigate("/", { replace: true });
-    } /* else if (
-      !isLogin &&
+    } else if (
+      !isLoggedIn &&
       (location.pathname === "/new" || location.pathname === "/profile")
     ) {
       navigate("/login", { replace: true });
-    } else if (isLogin && location.pathname === "/login") {
+    } else if (isLoggedIn && location.pathname === "/login") {
       navigate("/", { replace: true });
-    } */
-  }, [isLogin, location.pathname, navigate]);
+    }
+  }, [isLoggedIn, location.pathname, navigate]);
 
   return (
     <nav className={styles.container}>

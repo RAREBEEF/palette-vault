@@ -23,10 +23,10 @@ export interface paletteType {
 
 export interface userObjType {
   id: string;
-  displayName: string | null;
+  displayName: string;
 }
 
 export interface reduxStateType {
-  isLogin: boolean;
-  userObj: userObjType | {};
+  isLoggedIn: boolean;
+  userObj: userObjType;
 }

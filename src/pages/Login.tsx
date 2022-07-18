@@ -2,12 +2,12 @@ import {
   createUserWithEmailAndPassword,
   getAuth,
   signInWithEmailAndPassword,
-  updateProfile,
 } from "firebase/auth";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setLogin } from "../redux/modules/getAuth";
-import Button from "./Button";
+import { login } from "../redux/modules/logIn";
+import Button from "../components/Button";
+import styles from "./Login.module.scss";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -52,7 +52,13 @@ const Login = () => {
           const user = userCredential.user;
 
           dispatch(
-            setLogin(true, { id: user.uid, displayName: user.displayName })
+            login.actions.setLogIn({
+              isLoggedIn: true,
+              userObj: {
+                id: user.uid,
+                displayName: user.displayName,
+              },
+            })
           );
         })
         .catch((error) => {
@@ -64,7 +70,13 @@ const Login = () => {
           const user = userCredential.user;
 
           dispatch(
-            setLogin(true, { id: user.uid, displayName: user.displayName })
+            login.actions.setLogIn({
+              isLoggedIn: true,
+              userObj: {
+                id: user.uid,
+                displayName: user.displayName,
+              },
+            })
           );
         })
         .catch((error) => {
@@ -74,7 +86,7 @@ const Login = () => {
   };
 
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={onSubmit} className={styles.container}>
       <input
         type="text"
         value={email}

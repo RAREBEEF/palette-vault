@@ -1,1 +1,8 @@
 @import "./pages.scss";
+
+.container {
+  .main {
+    flex-grow: 1;
+    margin: 10px;
+  }
+}

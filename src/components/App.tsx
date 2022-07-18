@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { paletteType, reduxStateType } from "../types";
+import { paletteType } from "../types";
 import styles from "./App.module.scss";
 import New from "../pages/New";
 import Palettes from "../pages/Palettes";
@@ -9,18 +9,12 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { firebase } from "../fb";
 import Profile from "../pages/Profile";
 import { useDispatch } from "react-redux";
-import { setLogin } from "../redux/modules/getAuth";
-import { useSelector } from "react-redux";
-import Login from "./Login";
+import { login } from "../redux/modules/logIn";
+import Login from "../pages/Login";
 
 function App() {
   const [palettes, setPalettes] = useState<Array<paletteType>>([]);
   const dispatch = useDispatch();
-  const { isLogin, userObj } = useSelector((state: reduxStateType) => state);
-
-  useEffect(() => {
-    console.log(isLogin, userObj);
-  }, [isLogin, userObj]);
 
   useEffect(() => {
     const getData = localStorage.getItem("palettes");
@@ -43,13 +37,21 @@ function App() {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         dispatch(
-          setLogin(true, {
-            displayName: user.displayName,
-            id: user.uid,
+          login.actions.setLogIn({
+            isLoggedIn: true,
+            userObj: {
+              id: user.uid,
+              displayName: user.displayName,
+            },
           })
         );
       } else {
-        dispatch(setLogin(false, {}));
+        dispatch(
+          login.actions.setLogIn({
+            isLoggedIn: false,
+            userObj: { id: "", displayName: "" },
+          })
+        );
       }
     });
   }, [dispatch]);
