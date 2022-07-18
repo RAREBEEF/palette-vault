@@ -1,0 +1,15 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  min-width: 280px;
+}
+input {
+  &::placeholder {
+    color: gray;
+  }
+}
+a {
+  color: inherit;
+  text-decoration-line: none;
+}

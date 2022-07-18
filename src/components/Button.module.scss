@@ -1,0 +1,28 @@
+@import "../var.scss";
+
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 35px;
+  cursor: pointer;
+  border-radius: 5px;
+  border: none;
+  background-color: $theme;
+  color: white;
+  word-break: keep-all;
+  padding: {
+    left: 10px;
+    right: 10px;
+  }
+  font: {
+    weight: 700;
+  }
+  &:hover {
+    filter: brightness(1.2);
+  }
+
+  &.New__init {
+    background-color: darkgray;
+  }
+}

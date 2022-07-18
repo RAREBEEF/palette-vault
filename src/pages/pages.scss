@@ -1,0 +1,61 @@
+@import "../var.scss";
+
+.container:not(.home) {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: calc(100% - 40px);
+  max-width: 1300px;
+  margin: {
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+  }
+}
+
+.container {
+  .btn--back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: gray;
+    transition: color 0.2s;
+    margin: {
+      left: 10px;
+    }
+    &:hover {
+      color: lightgray;
+    }
+  }
+
+  .header {
+    color: gray;
+    padding: {
+      left: 10px;
+      right: 10px;
+      top: 20px;
+      bottom: 20px;
+    }
+    font: {
+      size: 23px;
+      weight: 700;
+    }
+  }
+}
+
+.empty {
+  text-align: center;
+  line-height: 25px;
+  color: gray;
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  flex-grow: 1;
+  white-space: pre-line;
+  font: {
+    size: 16px;
+  }
+}
