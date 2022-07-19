@@ -1,37 +1,24 @@
-import React, { useEffect, useState } from "react";
-import { paletteType } from "../types";
+import React, { useEffect } from "react";
 import styles from "./App.module.scss";
 import New from "../pages/New";
 import Palettes from "../pages/Palettes";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Nav from "./Nav";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { firebase } from "../fb";
 import Profile from "../pages/Profile";
 import { useDispatch } from "react-redux";
 import { login } from "../redux/modules/logIn";
 import Login from "../pages/Login";
+import { getPalettesThunk } from "../redux/modules/palettes";
 
 function App() {
-  const [palettes, setPalettes] = useState<Array<paletteType>>([]);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const getData = localStorage.getItem("palettes");
-
-    if (!getData) {
-      setPalettes([]);
-      return;
-    }
-
-    const parseData = JSON.parse(getData);
-
-    setPalettes(parseData);
-  }, []);
+    dispatch<any>(getPalettesThunk());
+  }, [dispatch]);
 
   useEffect(() => {
-    console.log(firebase);
-
     const auth = getAuth();
 
     onAuthStateChanged(auth, (user) => {
@@ -61,9 +48,9 @@ function App() {
       <Router>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/new" element={<New setPalettes={setPalettes} />} />
+          <Route path="/new" element={<New />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/" element={<Palettes palettes={palettes} />} />
+          <Route path="/" element={<Palettes />} />
         </Routes>
         <Nav />
       </Router>

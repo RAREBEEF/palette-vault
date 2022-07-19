@@ -1,20 +1,26 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import checkColor from "../tools/checkColor";
-import { NewPropsType } from "../types";
+import { NewPropsType, reduxStateType, userObjType } from "../types";
 import Button from "../components/Button";
 import styles from "./New.module.scss";
 import deleteIcon from "../icons/trash-can-solid.svg";
+import { addDoc, collection, getFirestore } from "firebase/firestore";
+import { firebase } from "../fb";
+import { useSelector } from "react-redux";
 
-const New: React.FC<NewPropsType> = ({ setPalettes }) => {
+const New: React.FC<NewPropsType> = () => {
   const [colors, setColors] = useState<Array<string>>([]);
   const [colorValue, setColorValue] = useState<string>("");
-  const [paletteName, setPaletteName] = useState<string>("");
+  const [name, setName] = useState<string>("");
+  const { id } = useSelector(
+    (state: reduxStateType): userObjType => state.login.userObj
+  );
 
   const onPaletteNameChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
     e.preventDefault();
     const { value } = e.target;
-    setPaletteName(value);
+    setName(value);
   };
 
   const onColorValueChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -47,34 +53,26 @@ const New: React.FC<NewPropsType> = ({ setPalettes }) => {
     });
   };
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (colors.length === 0 || paletteName.length === 0) {
+    if (colors.length === 0 || name.length === 0) {
       return;
     }
 
-    const getData = localStorage.getItem("palettes");
-    let prevPalettes;
+    try {
+      await addDoc(collection(getFirestore(firebase), "palettes"), {
+        colors,
+        name,
+        createdAt: new Date().getTime(),
+        creator: id,
+      });
 
-    if (!getData) {
-      prevPalettes = [];
-    } else {
-      prevPalettes = JSON.parse(getData);
+      setName("");
+      setColors([]);
+    } catch (error) {
+      console.error(error);
     }
-
-    console.log(prevPalettes, { name: paletteName, colors });
-
-    const newPalettes = [
-      ...prevPalettes,
-      { name: paletteName, colors, id: Date.now() },
-    ];
-
-    localStorage.setItem("palettes", JSON.stringify(newPalettes));
-    setPalettes(newPalettes);
-
-    setPaletteName("");
-    setColors([]);
   };
 
   const onInitClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -82,7 +80,7 @@ const New: React.FC<NewPropsType> = ({ setPalettes }) => {
 
     setColors([]);
     setColorValue("");
-    setPaletteName("");
+    setName("");
   };
 
   return (
@@ -97,7 +95,7 @@ const New: React.FC<NewPropsType> = ({ setPalettes }) => {
       <section className={styles.main}>
         <input
           className={styles["input--title"]}
-          value={paletteName}
+          value={name}
           onChange={onPaletteNameChange}
           placeholder="팔레트 이름"
         />
@@ -147,10 +145,11 @@ const New: React.FC<NewPropsType> = ({ setPalettes }) => {
         </div>
       </section>
 
-      <section className={styles["submit-wrapper"]}>
+      <section className={styles.submit}>
         <Button text="팔레트 저장하기" />
         <Button text="초기화" onClick={onInitClick} classes={["New__init"]} />
       </section>
+
       <footer className={styles.footer}>
         &copy; {new Date().getFullYear()}. RAREBEEF All Rights Reserved.
       </footer>

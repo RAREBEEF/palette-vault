@@ -5,14 +5,14 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Button from "../components/Button";
 import { login } from "../redux/modules/logIn";
-import { reduxStateType } from "../types";
+import { reduxLoginStateType } from "../types";
 import styles from "./Profile.module.scss";
 
 const Profile = () => {
   const [pw, setPw] = useState<string>("");
   const [pwCheck, setPwCheck] = useState<string>("");
   const [displayName, setDisplayName] = useState<string>();
-  const { userObj } = useSelector((state: reduxStateType) => state);
+  const { userObj } = useSelector((state: reduxLoginStateType) => state);
   const dispatch = useDispatch();
 
   const onDisplayNameChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -112,7 +112,7 @@ const Profile = () => {
           type="text"
           value={displayName}
           onChange={onDisplayNameChange}
-          placeholder={userObj.displayName}
+          placeholder={userObj?.displayName}
         />
         <Button text="닉네임 변경" onClick={onDisplayNameChangeClick} />
         <Button text="로그아웃" onClick={onLogOutClick} />

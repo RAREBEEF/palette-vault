@@ -3,6 +3,7 @@
 .container {
   // Nav height
   padding-top: 120px;
+  //
   min-height: 100vh;
   position: relative;
   display: flex;
@@ -11,8 +12,8 @@
   max-width: 1300px;
   min-width: $minWidth;
   margin: {
-    left: 20px;
-    right: 20px;
+    left: 10px;
+    right: 10px;
   }
   padding: {
     bottom: 20px;
@@ -81,7 +82,7 @@
   .container {
     // Nav height
     padding-top: 100px;
-
+    //
     .header-wrapper {
       margin: {
         top: 10px;

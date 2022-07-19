@@ -1,10 +1,17 @@
 import classNames from "classnames";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import Button from "../components/Button";
-import { PalettesPropsType } from "../types";
+import { PalettesPropsType, paletteType, reduxStateType } from "../types";
 import styles from "./Palettes.module.scss";
 
-const Palettes: React.FC<PalettesPropsType> = ({ palettes }) => {
+const Palettes: React.FC<PalettesPropsType> = () => {
+  const { login, palettes: palettesArr } = useSelector(
+    (state: reduxStateType): reduxStateType => state
+  );
+  const { data: palettes } = palettesArr;
+  const { userObj } = login;
+  const [myPalettes, setMyPalettes] = useState<Array<paletteType>>([]);
   const [tab, setTab] = useState<1 | 2>(1);
 
   const onFirstTabClick = () => {
@@ -14,6 +21,11 @@ const Palettes: React.FC<PalettesPropsType> = ({ palettes }) => {
   const onSecondTabClick = () => {
     setTab(2);
   };
+
+  useEffect(() => {
+    const temp = palettes.filter((palette) => palette.creator === userObj.id);
+    setMyPalettes(temp);
+  }, [palettes, userObj.id]);
 
   return (
     <div className={classNames(styles.container, styles.home)}>
@@ -71,8 +83,8 @@ const Palettes: React.FC<PalettesPropsType> = ({ palettes }) => {
         )}
         {tab === 2 && (
           <ul className={styles.palettes}>
-            {[].length !== 0 ? (
-              palettes.map((palette) => (
+            {myPalettes.length !== 0 ? (
+              myPalettes.map((palette) => (
                 <li key={palette.id} className={styles.palette}>
                   <h3 className={styles["palette-name"]}>{palette.name}</h3>
                   <ul className={styles["colors-wrapper"]}>

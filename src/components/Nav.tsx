@@ -7,7 +7,7 @@ import styles from "./Nav.module.scss";
 const Nav = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { isLoggedIn } = useSelector((state: any) => state);
+  const { isLoggedIn } = useSelector((state: any) => state.login);
 
   useEffect(() => {
     if (
@@ -39,6 +39,7 @@ const Nav = () => {
       >
         <h1>COLOR VAULT</h1>
       </NavLink>
+
       <div className={styles["wrapper-not-logo"]}>
         <NavLink
           to="/new"
