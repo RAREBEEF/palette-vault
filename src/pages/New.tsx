@@ -8,12 +8,13 @@ import deleteIcon from "../icons/trash-can-solid.svg";
 import { addDoc, collection, getFirestore } from "firebase/firestore";
 import { firebase } from "../fb";
 import { useSelector } from "react-redux";
+import Footer from "../components/Footer";
 
 const New: React.FC<NewPropsType> = () => {
   const [colors, setColors] = useState<Array<string>>([]);
   const [colorValue, setColorValue] = useState<string>("");
   const [name, setName] = useState<string>("");
-  const { id } = useSelector(
+  const { id, displayName } = useSelector(
     (state: reduxStateType): userObjType => state.login.userObj
   );
 
@@ -56,7 +57,11 @@ const New: React.FC<NewPropsType> = () => {
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (colors.length === 0 || name.length === 0) {
+    if (colors.length === 0) {
+      window.alert("색상을 1개 이상 추가해 주세요.");
+      return;
+    } else if (name.length === 0) {
+      window.alert("팔레트 이름을 입력해 주세요.");
       return;
     }
 
@@ -66,12 +71,13 @@ const New: React.FC<NewPropsType> = () => {
         name,
         createdAt: new Date().getTime(),
         creator: id,
+        author: displayName,
       });
 
       setName("");
       setColors([]);
     } catch (error) {
-      console.error(error);
+      window.alert("오류가 발생했습니다. 다시 시도해 주세요.");
     }
   };
 
@@ -97,7 +103,9 @@ const New: React.FC<NewPropsType> = () => {
           className={styles["input--title"]}
           value={name}
           onChange={onPaletteNameChange}
-          placeholder="팔레트 이름"
+          placeholder="팔레트 이름 (1~12 글자)"
+          minLength={1}
+          maxLength={12}
         />
         <ul className={styles["palette"]}>
           <div className={styles["colors-wrapper"]}>
@@ -150,9 +158,7 @@ const New: React.FC<NewPropsType> = () => {
         <Button text="초기화" onClick={onInitClick} classes={["New__init"]} />
       </section>
 
-      <footer className={styles.footer}>
-        &copy; {new Date().getFullYear()}. RAREBEEF All Rights Reserved.
-      </footer>
+      <Footer />
     </form>
   );
 };

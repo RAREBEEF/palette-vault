@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./App.module.scss";
 import New from "../pages/New";
 import Palettes from "../pages/Palettes";
@@ -10,15 +10,28 @@ import { useDispatch } from "react-redux";
 import { login } from "../redux/modules/logIn";
 import Login from "../pages/Login";
 import { getPalettesThunk } from "../redux/modules/palettes";
+import { useSelector } from "react-redux";
+import { paletteType, reduxStateType } from "../types";
+import Loading from "./Loading";
 
 function App() {
   const dispatch = useDispatch();
+  const [init, setInit] = useState<boolean>(false);
+  const {
+    login: { isLoggedIn, userObj },
+    palettes: { data: palettes },
+  } = useSelector((state: reduxStateType): reduxStateType => state);
+  const [myPalettes, setMyPalettes] = useState<Array<paletteType>>([]);
+
+  useEffect(() => {
+    if (!init && isLoggedIn !== null && palettes !== null) {
+      setInit(true);
+    }
+  }, [init, isLoggedIn, palettes]);
 
   useEffect(() => {
     dispatch<any>(getPalettesThunk());
-  }, [dispatch]);
 
-  useEffect(() => {
     const auth = getAuth();
 
     onAuthStateChanged(auth, (user) => {
@@ -43,17 +56,34 @@ function App() {
     });
   }, [dispatch]);
 
+  useEffect(() => {
+    if (!palettes || !isLoggedIn) {
+      return;
+    }
+
+    const temp = palettes.filter((palette) => palette.creator === userObj.id);
+
+    setMyPalettes(temp);
+  }, [isLoggedIn, palettes, userObj.id]);
+
   return (
     <div className={styles.container}>
-      <Router>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/new" element={<New />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/" element={<Palettes />} />
-        </Routes>
-        <Nav />
-      </Router>
+      {init ? (
+        <Router>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/new" element={<New />} />
+            <Route
+              path="/profile"
+              element={<Profile myPalettes={myPalettes} />}
+            />
+            <Route path="/" element={<Palettes myPalettes={myPalettes} />} />
+          </Routes>
+          <Nav />
+        </Router>
+      ) : (
+        <Loading />
+      )}
     </div>
   );
 }

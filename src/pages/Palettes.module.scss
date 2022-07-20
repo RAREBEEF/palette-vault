@@ -62,56 +62,6 @@
         top: 50px;
         bottom: 50px;
       }
-
-      .palette {
-        margin: 15px;
-
-        .colors-wrapper {
-          overflow: hidden;
-          border: 0.1px solid lightgray;
-          border-radius: 5px;
-          display: flex;
-          width: 40vw;
-          max-width: 400px;
-          height: 10vw;
-          min-height: 80px;
-
-          .color {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: all 0.2s;
-            flex-shrink: 1;
-            cursor: pointer;
-            overflow: hidden;
-            width: 100%;
-
-            &:hover {
-              flex-shrink: 0.8;
-
-              .color-name {
-                opacity: 1;
-              }
-            }
-
-            .color-name {
-              color: white;
-              background-color: rgba(0, 0, 0, 0.5);
-              transition: opacity 0.2s;
-              opacity: 0;
-              padding: 3px;
-            }
-          }
-        }
-
-        .palette-name {
-          padding: 5px;
-          font: {
-            size: 20px;
-            weight: 700;
-          }
-        }
-      }
     }
   }
 }
@@ -123,15 +73,15 @@
         flex-direction: column;
         justify-content: flex-start;
         align-items: center;
-        .palette {
-          width: 80vw;
-          min-width: 240px;
-          margin: 10px;
-          .colors-wrapper {
-            width: auto;
-            max-width: 300%;
-          }
-        }
+        // .palette {
+        //   width: 80vw;
+        //   min-width: 240px;
+        //   margin: 10px;
+        //   .colors-wrapper {
+        //     width: auto;
+        //     max-width: 300%;
+        //   }
+        // }
       }
     }
   }

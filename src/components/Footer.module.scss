@@ -1,0 +1,23 @@
+.footer {
+  height: 30px;
+  text-align: center;
+  margin: {
+    top: 50px;
+  }
+  font: {
+    size: 13px;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .footer {
+    height: 15px;
+    text-align: center;
+    margin: {
+      top: 20px;
+    }
+    font: {
+      size: 13px;
+    }
+  }
+}

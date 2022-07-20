@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { reduxLoginStateType } from "../../types";
 
 const initialState: reduxLoginStateType = {
-  isLoggedIn: false,
+  isLoggedIn: null,
   userObj: { id: "", displayName: "" },
 };
 

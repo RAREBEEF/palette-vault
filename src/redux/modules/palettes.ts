@@ -53,7 +53,7 @@ export const getPalettesThunk = () => {
         dispatch(getPalettesSuccess(palettesData));
       });
     } catch (error) {
-      console.error(error);
+      window.alert("팔레트를 불러오는데 실패하였습니다.")
       dispatch(getPalettesFail(error));
     }
   };
@@ -81,7 +81,7 @@ export const reducer = (prev = initialState, action: any) => {
 };
 
 const initialState: reduxPalettesStateType = {
-  data: [],
+  data: null,
   loading: false,
   error: null,
 };

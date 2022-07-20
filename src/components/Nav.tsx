@@ -37,12 +37,12 @@ const Nav = () => {
             : classNames(styles.item, styles.logo)
         }
       >
-        <h1>COLOR VAULT</h1>
+        <h1>PALETTE VAULT</h1>
       </NavLink>
 
       <div className={styles["wrapper-not-logo"]}>
         <NavLink
-          to="/new"
+          to={isLoggedIn ? "/new" : "/login"}
           className={({ isActive }: any): string =>
             isActive
               ? classNames(styles.active, styles.item, styles.new)
@@ -52,7 +52,7 @@ const Nav = () => {
           새 팔레트
         </NavLink>
         <NavLink
-          to="/profile"
+          to={isLoggedIn ? "/profile" : "/login"}
           className={({ isActive }: any): string =>
             isActive ? classNames(styles.active, styles.item) : styles.item
           }

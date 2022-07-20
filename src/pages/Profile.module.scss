@@ -2,7 +2,65 @@
 
 .container {
   .main {
+    padding-top: 60px;
+    transform: translateY(-60px);
     flex-grow: 1;
-    margin: 10px;
+    align-self: center;
+    width: 80vw;
+    min-width: $minWidth - 40px;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 30px;
+
+    .alert {
+      height: 30px;
+      text-align: center;
+      color: gray;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font: {
+        size: 13px;
+      }
+    }
+
+    .setting {
+      .sub-header {
+        color: gray;
+        font: {
+          size: 18px;
+          weight: 600;
+        }
+      }
+
+      .input-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 10px;
+        margin-top: 20px;
+        input {
+          height: 35px;
+          border: 1px solid gray;
+          border-radius: 5px;
+          outline: none;
+          padding: {
+            left: 10px;
+            right: 10px;
+          }
+          font: {
+            size: 16px;
+          }
+        }
+      }
+
+      &.setting--pw {
+        .input-wrapper {
+          flex-direction: column;
+        }
+      }
+    }
   }
 }

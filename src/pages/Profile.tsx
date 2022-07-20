@@ -1,28 +1,46 @@
+import classNames from "classnames";
 import { getAuth, updatePassword, updateProfile } from "firebase/auth";
+import { doc, getFirestore, setDoc } from "firebase/firestore";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "../components/Button";
+import Footer from "../components/Footer";
+import { firebase } from "../fb";
 import { login } from "../redux/modules/logIn";
-import { reduxLoginStateType } from "../types";
+import checkError from "../tools/checkError";
+import {
+  ProfilePropsType,
+  reduxLoginStateType,
+  reduxStateType,
+} from "../types";
 import styles from "./Profile.module.scss";
 
-const Profile = () => {
+const Profile: React.FC<ProfilePropsType> = ({ myPalettes }) => {
+  const navigate = useNavigate();
+  const [alert, setAlert] = useState<string>("");
   const [pw, setPw] = useState<string>("");
   const [pwCheck, setPwCheck] = useState<string>("");
-  const [displayName, setDisplayName] = useState<string>();
-  const { userObj } = useSelector((state: reduxLoginStateType) => state);
+  const [displayName, setDisplayName] = useState<string>("");
+  const { userObj } = useSelector(
+    (state: reduxStateType): reduxLoginStateType => state.login
+  );
   const dispatch = useDispatch();
-
   const onDisplayNameChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const { value } = e.target;
 
     setDisplayName(value);
   };
-
-  const onDisplayNameChangeClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const onDisplayNameChangeClick = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
     e.preventDefault();
+
+    if (displayName.length < 2 || displayName.length > 12) {
+      setAlert("닉네임은 2 ~ 12글자 범위여야 합니다.");
+      return;
+    }
 
     const user = getAuth().currentUser;
 
@@ -30,24 +48,35 @@ const Profile = () => {
       return;
     }
 
-    updateProfile(user, {
-      displayName,
-    })
-      .then(() => {
-        dispatch(
-          login.actions.setLogIn({
-            isLoggedIn: true,
-            userObj: {
-              id: user.uid,
-              displayName: displayName,
-            },
-          })
-        );
-        setDisplayName("");
+    try {
+      await updateProfile(user, {
+        displayName,
       })
-      .catch((error) => {
-        console.error(error);
-      });
+        .then(() => {
+          dispatch(
+            login.actions.setLogIn({
+              isLoggedIn: true,
+              userObj: {
+                id: user.uid,
+                displayName: displayName,
+              },
+            })
+          );
+        })
+        .then(() => {
+          myPalettes.forEach((palette) => {
+            setDoc(doc(getFirestore(firebase), "palettes", palette.id), {
+              ...palette,
+              author: displayName,
+            });
+          });
+        });
+
+      setDisplayName("");
+      setAlert("닉네임이 변경되었습니다.");
+    } catch (error) {
+      setAlert("오류가 발생했습니다. 다시 시도해 주세요.");
+    }
   };
 
   const onLogOutClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -69,21 +98,42 @@ const Profile = () => {
     setPwCheck(value);
   };
 
-  const onPwChangeClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const onPwChangeClick = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (pw.length < 6 || pw.length > 25) {
+      setAlert("비밀번호는 6 ~ 25글자 범위여야 합니다.");
+      return;
+    } else if (pw !== pwCheck) {
+      setAlert("비밀번호 확인이 일치하지 않습니다.");
+      return;
+    }
 
     const user = getAuth().currentUser;
 
-    if (!user || pw !== pwCheck) {
+    if (!user) {
       return;
     }
 
     updatePassword(user, pw)
       .then(() => {
-        console.log("changed");
+        setAlert("비밀번호가 변경되었습니다.");
       })
       .catch((error) => {
-        console.error(error);
+        setAlert(checkError(error.code));
+
+        setAlert(checkError(error.code));
+
+        if (error.code === "auth/requires-recent-login") {
+          const ok = window.confirm(checkError(error.code));
+
+          if (ok) {
+            const auth = getAuth();
+            auth.signOut().then(() => {
+              navigate("/login", { replace: true });
+            });
+          }
+        }
       });
   };
 
@@ -95,7 +145,20 @@ const Profile = () => {
     const ok = window.confirm("계정을 탈퇴하시겠습니까?");
 
     if (user && ok) {
-      user.delete();
+      user.delete().catch((error) => {
+        setAlert(checkError(error.code));
+
+        if (error.code === "auth/requires-recent-login") {
+          const ok = window.confirm(checkError(error.code));
+
+          if (ok) {
+            const auth = getAuth();
+            auth.signOut().then(() => {
+              navigate("/login", { replace: true });
+            });
+          }
+        }
+      });
     }
   };
 
@@ -107,23 +170,63 @@ const Profile = () => {
         </Link>
         <h2 className={styles.header}>프로필 설정</h2>
       </section>
+
       <section className={styles.main}>
-        <input
-          type="text"
-          value={displayName}
-          onChange={onDisplayNameChange}
-          placeholder={userObj?.displayName}
-        />
-        <Button text="닉네임 변경" onClick={onDisplayNameChangeClick} />
-        <Button text="로그아웃" onClick={onLogOutClick} />
-        <input type="password" value={pw} onChange={onPwChange} />
-        <input type="password" value={pwCheck} onChange={onPwCheckChange} />
-        <Button text="비밀번호 변경" onClick={onPwChangeClick} />
-        <Button text="계정 탈퇴" onClick={onDeleteAccountClick} />
+        <p className={styles.alert}>{alert}</p>
+        <form
+          onSubmit={onDisplayNameChangeClick}
+          className={classNames(
+            styles["setting--display-name"],
+            styles.setting
+          )}
+        >
+          <h2 className={styles["sub-header"]}>닉네임 변경</h2>
+          <div className={styles["input-wrapper"]}>
+            <input
+              type="text"
+              value={displayName}
+              onChange={onDisplayNameChange}
+              placeholder={userObj?.displayName}
+            />
+            <Button text="닉네임 변경" />
+          </div>
+        </form>
+
+        <form
+          onSubmit={onPwChangeClick}
+          className={classNames(styles["setting--pw"], styles.setting)}
+        >
+          <h2 className={styles["sub-header"]}>비밀번호 변경</h2>
+          <div className={styles["input-wrapper"]}>
+            <input type="email" autoComplete="email" hidden />
+            <input
+              type="password"
+              value={pw}
+              onChange={onPwChange}
+              placeholder="새 비밀번호"
+              autoComplete="new-password"
+            />
+            <input
+              type="password"
+              value={pwCheck}
+              onChange={onPwCheckChange}
+              placeholder="새 비밀번호 확인"
+              autoComplete="new-password"
+            />
+            <Button text="비밀번호 변경" />
+          </div>
+        </form>
+
+        <div className={classNames(styles["btn-group"], styles.setting)}>
+          <h2 className={styles["sub-header"]}>계정 설정</h2>
+          <div className={styles["input-wrapper"]}>
+            <Button text="로그아웃" onClick={onLogOutClick} />
+            <Button text="계정 탈퇴" onClick={onDeleteAccountClick} />
+          </div>
+        </div>
       </section>
-      <footer className={styles.footer}>
-        &copy; {new Date().getFullYear()}. RAREBEEF All Rights Reserved.
-      </footer>
+
+      <Footer />
     </div>
   );
 };

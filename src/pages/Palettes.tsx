@@ -1,17 +1,17 @@
 import classNames from "classnames";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import Button from "../components/Button";
-import { PalettesPropsType, paletteType, reduxStateType } from "../types";
+import Footer from "../components/Footer";
+import Palette from "../components/Palette";
+import { PalettesPropsType, reduxStateType } from "../types";
 import styles from "./Palettes.module.scss";
 
-const Palettes: React.FC<PalettesPropsType> = () => {
-  const { login, palettes: palettesArr } = useSelector(
-    (state: reduxStateType): reduxStateType => state
-  );
-  const { data: palettes } = palettesArr;
-  const { userObj } = login;
-  const [myPalettes, setMyPalettes] = useState<Array<paletteType>>([]);
+const Palettes: React.FC<PalettesPropsType> = ({ myPalettes }) => {
+  const {
+    login: { isLoggedIn },
+    palettes: { data: palettes },
+  } = useSelector((state: reduxStateType): reduxStateType => state);
   const [tab, setTab] = useState<1 | 2>(1);
 
   const onFirstTabClick = () => {
@@ -21,11 +21,6 @@ const Palettes: React.FC<PalettesPropsType> = () => {
   const onSecondTabClick = () => {
     setTab(2);
   };
-
-  useEffect(() => {
-    const temp = palettes.filter((palette) => palette.creator === userObj.id);
-    setMyPalettes(temp);
-  }, [palettes, userObj.id]);
 
   return (
     <div className={classNames(styles.container, styles.home)}>
@@ -56,27 +51,19 @@ const Palettes: React.FC<PalettesPropsType> = () => {
       <section className={styles.tabs}>
         {tab === 1 && (
           <ul className={styles.palettes}>
-            {palettes.length !== 0 ? (
+            {palettes && palettes.length !== 0 ? (
               palettes.map((palette) => (
-                <li key={palette.id} className={styles.palette}>
-                  <h3 className={styles["palette-name"]}>{palette.name}</h3>
-                  <ul className={styles["colors-wrapper"]}>
-                    {palette.colors.map((color, i) => (
-                      <li
-                        className={styles.color}
-                        key={i}
-                        style={{ backgroundColor: color }}
-                      >
-                        <h4 className={styles["color-name"]}>{color}</h4>
-                      </li>
-                    ))}
-                  </ul>
-                </li>
+                <Palette palette={palette} key={palette.id} />
               ))
             ) : (
               <div className={styles.empty}>
                 <p>{`팔레트가 없습니다.\n첫 팔레트를 생성해 보세요.`}</p>
-                <Button text="팔레트 생성하기" path="/new" />
+                <Button
+                  text={
+                    isLoggedIn ? "팔레트 생성하기" : "로그인 후 팔레트 생성하기"
+                  }
+                  path={isLoggedIn ? "/new" : "/login"}
+                />
               </div>
             )}
           </ul>
@@ -85,33 +72,24 @@ const Palettes: React.FC<PalettesPropsType> = () => {
           <ul className={styles.palettes}>
             {myPalettes.length !== 0 ? (
               myPalettes.map((palette) => (
-                <li key={palette.id} className={styles.palette}>
-                  <h3 className={styles["palette-name"]}>{palette.name}</h3>
-                  <ul className={styles["colors-wrapper"]}>
-                    {palette.colors.map((color, i) => (
-                      <li
-                        className={styles.color}
-                        key={i}
-                        style={{ backgroundColor: color }}
-                      >
-                        <h4 className={styles["color-name"]}>{color}</h4>
-                      </li>
-                    ))}
-                  </ul>
-                </li>
+                <Palette palette={palette} key={palette.id} />
               ))
             ) : (
               <div className={styles.empty}>
                 <p>{`팔레트가 없습니다.\n첫 팔레트를 생성해 보세요.`}</p>
-                <Button text="팔레트 생성하기" path="/new" />
+                <Button
+                  text={
+                    isLoggedIn ? "팔레트 생성하기" : "로그인 후 팔레트 생성하기"
+                  }
+                  path={isLoggedIn ? "/new" : "/login"}
+                />
               </div>
             )}
           </ul>
         )}
       </section>
-      <footer className={styles.footer}>
-        &copy; {new Date().getFullYear()}. RAREBEEF All Rights Reserved.
-      </footer>
+
+      <Footer />
     </div>
   );
 };

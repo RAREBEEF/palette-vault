@@ -13,6 +13,7 @@
   color: black;
   padding: 30px 20px;
   border-bottom: 0.5px solid lightgray;
+  box-shadow: 0px 1px 5px gray;
 
   font: {
     weight: 700;
@@ -28,6 +29,7 @@
   .item {
     background-color: white;
     padding: 10px;
+    padding-bottom: 12.5px;
     border-radius: 5px;
     word-break: keep-all;
     transition: all 0.2s;
@@ -49,6 +51,7 @@
       align-items: center;
       max-width: 110px;
       text-align: center;
+      margin-bottom: 5px;
       font: {
         size: 35px;
         weight: 900;
