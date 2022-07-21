@@ -10,7 +10,7 @@
   flex-grow: 1;
   gap: 30px;
   background-color: white;
-  color: black;
+  color: gray;
   padding: 30px 20px;
   border-bottom: 0.5px solid lightgray;
   box-shadow: 0px 1px 5px gray;
@@ -27,7 +27,6 @@
   }
 
   .item {
-    background-color: white;
     padding: 10px;
     padding-bottom: 12.5px;
     border-radius: 5px;
@@ -40,32 +39,56 @@
 
     &:not(.new, .logo) {
       &:hover {
-        color: gray;
+        color: lightgray;
       }
     }
 
     &.logo {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      margin: auto;
       color: $theme;
-      height: 50px;
+      height: 60px;
       display: inline-flex;
       align-items: center;
       max-width: 110px;
-      text-align: center;
-      margin-bottom: 5px;
-      font: {
-        size: 35px;
-        weight: 900;
+
+      .img--logo {
+        height: inherit;
       }
     }
 
     &.new {
+      opacity: 1;
       background-color: $theme;
       color: white;
       &:hover {
         filter: brightness(1.2);
       }
       &.active {
-        display: none;
+        pointer-events: none;
+        opacity: 0;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 430px) {
+  .container {
+    .item {
+      &.logo {
+        height: 50px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 390px) {
+  .container {
+    .item {
+      &.logo {
+        height: 40px;
       }
     }
   }
@@ -83,35 +106,18 @@
     .item {
       padding: 5px;
       &.logo {
-        font: {
-          size: 30px;
-        }
+        height: 35px;
       }
     }
   }
 }
 
-// @media screen and (max-width: 290px) {
-//   .container {
-//     flex-direction: column;
-//     align-items: flex-end;
-//     justify-content: center;
-//     gap: 10px;
-
-//     .item {
-//       padding: 3px;
-//       font: {
-//         size: 13px;
-//       }
-//     }
-
-//     li {
-//       &:nth-child(1) {
-//         order: 2;
-//       }
-//       &:nth-child(2) {
-//         order: 1;
-//       }
-//     }
-//   }
-// }
+@media screen and (max-width: 300px) {
+  .container {
+    .item {
+      &.logo {
+        height: 30px;
+      }
+    }
+  }
+}

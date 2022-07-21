@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import checkColor from "../tools/checkColor";
 import { NewPropsType, reduxStateType, userObjType } from "../types";
 import Button from "../components/Button";
@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import Footer from "../components/Footer";
 
 const New: React.FC<NewPropsType> = () => {
+  const navigate = useNavigate();
   const [colors, setColors] = useState<Array<string>>([]);
   const [colorValue, setColorValue] = useState<string>("");
   const [name, setName] = useState<string>("");
@@ -76,6 +77,7 @@ const New: React.FC<NewPropsType> = () => {
 
       setName("");
       setColors([]);
+      navigate("/", { replace: true });
     } catch (error) {
       window.alert("오류가 발생했습니다. 다시 시도해 주세요.");
     }
@@ -103,9 +105,9 @@ const New: React.FC<NewPropsType> = () => {
           className={styles["input--title"]}
           value={name}
           onChange={onPaletteNameChange}
-          placeholder="팔레트 이름 (1~12 글자)"
+          placeholder="팔레트 이름 (1~20 글자)"
           minLength={1}
-          maxLength={12}
+          maxLength={20}
         />
         <ul className={styles["palette"]}>
           <div className={styles["colors-wrapper"]}>

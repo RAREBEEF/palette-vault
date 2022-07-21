@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import styles from "./Nav.module.scss";
+import logoImg from "../imgs/nav-logo.png";
 
 const Nav = () => {
   const location = useLocation();
@@ -37,7 +38,12 @@ const Nav = () => {
             : classNames(styles.item, styles.logo)
         }
       >
-        <h1>PALETTE VAULT</h1>
+        {/* <h1>PALETTE VAULT</h1> */}
+        <img
+          src={logoImg}
+          alt="Palette Vault"
+          className={styles["img--logo"]}
+        />
       </NavLink>
 
       <div className={styles["wrapper-not-logo"]}>
