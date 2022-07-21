@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import checkColor from "../tools/checkColor";
 import { NewPropsType, reduxStateType, userObjType } from "../types";
@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import Footer from "../components/Footer";
 
 const New: React.FC<NewPropsType> = () => {
+  const colorPickerRef = useRef<any>(null);
   const navigate = useNavigate();
   const [colors, setColors] = useState<Array<string>>([]);
   const [colorValue, setColorValue] = useState<string>("");
@@ -91,6 +92,16 @@ const New: React.FC<NewPropsType> = () => {
     setName("");
   };
 
+  const onPickColor = () => {
+    if (!colorPickerRef.current) {
+      return;
+    }
+
+    const { value } = colorPickerRef.current;
+
+    setColorValue(value);
+  };
+
   return (
     <form className={styles.container} onSubmit={onSubmit}>
       <section className={styles["header-wrapper"]}>
@@ -144,6 +155,12 @@ const New: React.FC<NewPropsType> = () => {
 
       <section className={styles.add}>
         <div className={styles["input-wrapper"]}>
+          <input
+            type="color"
+            ref={colorPickerRef}
+            onChange={onPickColor}
+            className={styles["color-picker"]}
+          />
           <input
             className={styles["input--color"]}
             type="text"

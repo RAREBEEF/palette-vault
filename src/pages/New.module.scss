@@ -107,11 +107,19 @@
     .input-wrapper {
       display: flex;
       gap: 10px;
+      min-width: calc($minWidth - 60px);
+      // max-width: 80vw;
+      margin: auto;
+
+      .color-picker {
+        height: 35px;
+        cursor: pointer;
+      }
 
       .input--color {
+        width: 100%;
         padding: 5px;
         height: 35px;
-        flex-grow: 1;
         font: {
           size: 16px;
         }
