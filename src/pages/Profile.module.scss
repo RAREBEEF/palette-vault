@@ -27,6 +27,9 @@
     }
 
     .setting {
+      input {
+        width: 100%;
+      }
       .sub-header {
         color: gray;
         font: {
@@ -53,12 +56,6 @@
           font: {
             size: 16px;
           }
-        }
-      }
-
-      &.setting--pw {
-        .input-wrapper {
-          flex-direction: column;
         }
       }
     }

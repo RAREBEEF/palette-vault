@@ -4,7 +4,8 @@
   // Nav height
   padding-top: 120px;
   //
-  min-height: 100vh;
+  height: 100vh;
+  min-height: -webkit-fill-available;
   position: relative;
   display: flex;
   flex-direction: column;
