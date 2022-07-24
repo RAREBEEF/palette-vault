@@ -4,62 +4,54 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import Footer from "../components/Footer";
 import { DetailPropsType, paletteType, reduxStateType } from "../types";
 import styles from "./Detail.module.scss";
-import gsap from "gsap";
 import Button from "../components/Button";
 import { deleteDoc, doc, getFirestore } from "firebase/firestore";
 import { firebase } from "../fb";
 import checkError from "../tools/checkError";
+import useCopyAlert from "../hooks/useAlert";
 
 const Detail: React.FC<DetailPropsType> = ({ copyAlertRef, setIsCopyFail }) => {
-  const [palette, setPalette] = useState<paletteType>();
-  const navigate = useNavigate();
-  const params = useParams();
   const {
     login: { userObj },
     palettes: { data: palettes },
   } = useSelector((state: reduxStateType): reduxStateType => state);
-  let prevGsap: Array<any> = [];
+  const navigate = useNavigate();
+  const params = useParams();
 
+  // 출력할 팔레트 정보
+  const [palette, setPalette] = useState<paletteType>();
+
+  // 복사 알림
+  let prevAnimations: Array<any> = [];
+  const showAlert = useCopyAlert(copyAlertRef, prevAnimations);
+
+  // id 체크, 복사할 팔레트 state에 저장
   useEffect(() => {
     if (!params.id) {
       return;
+    } else if (!palettes[params.id]) {
+      navigate("/", { replace: true });
     }
-    setPalette(palettes[params.id]);
-  }, [palettes, params, params.id]);
 
+    setPalette(palettes[params.id]);
+  }, [navigate, palettes, params, params.id]);
+
+  // 색상 복사
   const onColorClick = (e: React.MouseEvent<HTMLLIElement>, color: string) => {
     e.preventDefault();
+    setIsCopyFail(false);
+
     navigator.clipboard
       .writeText(color)
       .then(() => {
-        if (copyAlertRef.current) {
-          if (prevGsap.length !== 0) {
-            prevGsap?.forEach((gsap) => gsap.kill());
-            prevGsap = [];
-          }
-
-          const copyAlert = copyAlertRef.current;
-
-          copyAlert.style.bottom = "-40px";
-
-          const appear = gsap.to(copyAlert, 0.3, {
-            bottom: "120px",
-          });
-
-          const disappear = gsap.to(copyAlert, 0.3, {
-            delay: 1.3,
-            bottom: "-40px",
-          });
-
-          prevGsap.push(appear, disappear);
-          setIsCopyFail(false);
-        }
+        showAlert && showAlert();
       })
       .catch((error) => {
         setIsCopyFail(true);
       });
   };
 
+  // 팔레트 삭제
   const onDeletePalette = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 

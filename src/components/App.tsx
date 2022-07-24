@@ -17,15 +17,20 @@ import Detail from "../pages/Detail";
 import CopyAlert from "./CopyAlert";
 
 function App() {
-  const dispatch = useDispatch();
-  const [init, setInit] = useState<boolean>(false);
-  const [myPalettesId, setMyPalettesId] = useState<any>({});
-  const [isCopyFail, setIsCopyFail] = useState<boolean>(false);
-  const copyAlertRef = useRef<any>(null);
   const {
     login: { isLoggedIn, userObj },
     palettes: { data: palettes },
   } = useSelector((state: reduxStateType): reduxStateType => state);
+  const dispatch = useDispatch();
+
+  // init
+  const [init, setInit] = useState<boolean>(false);
+  // 내 팔레트 id
+  const [myPalettesId, setMyPalettesId] = useState<Array<string>>([]);
+  // 복사 실패 여부
+  const [isCopyFail, setIsCopyFail] = useState<boolean>(false);
+  // 복사 알림 ref
+  const copyAlertRef = useRef<any>(null);
 
   // init
   useEffect(() => {

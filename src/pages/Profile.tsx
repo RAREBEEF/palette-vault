@@ -14,21 +14,24 @@ import { ProfilePropsType, reduxStateType } from "../types";
 import styles from "./Profile.module.scss";
 
 const Profile: React.FC<ProfilePropsType> = ({ myPalettesId }) => {
-  const navigate = useNavigate();
-  const [alert, setAlert] = useState<string>("");
-  const [pw, setPw] = useState<string>("");
-  const [pwCheck, setPwCheck] = useState<string>("");
-  const [displayName, setDisplayName] = useState<string>("");
   const {
     login: { userObj },
     palettes: { data: palettes },
   } = useSelector((state: reduxStateType): reduxStateType => state);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [alert, setAlert] = useState<string>("");
+  const [pw, setPw] = useState<string>("");
+  const [pwCheck, setPwCheck] = useState<string>("");
+  const [displayName, setDisplayName] = useState<string>("");
+
   const onDisplayNameChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const { value } = e.target;
 
     setDisplayName(value);
   };
+
   const onDisplayNameChangeClick = async (
     e: React.FormEvent<HTMLFormElement>
   ) => {
@@ -71,8 +74,8 @@ const Profile: React.FC<ProfilePropsType> = ({ myPalettesId }) => {
 
       setDisplayName("");
       setAlert("닉네임이 변경되었습니다.");
-    } catch (error) {
-      setAlert("오류가 발생했습니다. 다시 시도해 주세요.");
+    } catch (error: any) {
+      setAlert(checkError(error.code));
     }
   };
 
@@ -126,6 +129,7 @@ const Profile: React.FC<ProfilePropsType> = ({ myPalettesId }) => {
 
           if (ok) {
             const auth = getAuth();
+
             auth.signOut().then(() => {
               navigate("/login", { replace: true });
             });
@@ -150,6 +154,7 @@ const Profile: React.FC<ProfilePropsType> = ({ myPalettesId }) => {
 
           if (ok) {
             const auth = getAuth();
+
             auth.signOut().then(() => {
               navigate("/login", { replace: true });
             });

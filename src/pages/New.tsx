@@ -9,21 +9,28 @@ import { addDoc, collection, getFirestore } from "firebase/firestore";
 import { firebase } from "../fb";
 import { useSelector } from "react-redux";
 import Footer from "../components/Footer";
+import checkError from "../tools/checkError";
 
 const New: React.FC<NewPropsType> = () => {
-  const colorPickerRef = useRef<any>(null);
-  const navigate = useNavigate();
-  const [colors, setColors] = useState<Array<string>>([]);
-  const [colorValue, setColorValue] = useState<string>("");
-  const [name, setName] = useState<string>("");
   const { id, displayName } = useSelector(
     (state: reduxStateType): userObjType => state.login.userObj
   );
+  const navigate = useNavigate();
+
+  // <input type="color" /> ref
+  const colorPickerRef = useRef<any>(null);
+
+  // 색상 배열
+  const [colors, setColors] = useState<Array<string>>([]);
+  // 색상 값
+  const [colorValue, setColorValue] = useState<string>("");
+  // 팔레트 이름
+  const [paletteName, setPaletteName] = useState<string>("");
 
   const onPaletteNameChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
     e.preventDefault();
     const { value } = e.target;
-    setName(value);
+    setPaletteName(value);
   };
 
   const onColorValueChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -56,40 +63,12 @@ const New: React.FC<NewPropsType> = () => {
     });
   };
 
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (colors.length === 0) {
-      window.alert("색상을 1개 이상 추가해 주세요.");
-      return;
-    } else if (name.length === 0) {
-      window.alert("팔레트 이름을 입력해 주세요.");
-      return;
-    }
-
-    try {
-      await addDoc(collection(getFirestore(firebase), "palettes"), {
-        colors,
-        name,
-        createdAt: new Date().getTime(),
-        creator: id,
-        author: displayName,
-      });
-
-      setName("");
-      setColors([]);
-      navigate("/", { replace: true });
-    } catch (error) {
-      window.alert("오류가 발생했습니다. 다시 시도해 주세요.");
-    }
-  };
-
   const onInitClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
     setColors([]);
     setColorValue("");
-    setName("");
+    setPaletteName("");
   };
 
   const onPickColor = () => {
@@ -100,6 +79,34 @@ const New: React.FC<NewPropsType> = () => {
     const { value } = colorPickerRef.current;
 
     setColorValue(value);
+  };
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (colors.length === 0) {
+      window.alert("색상을 1개 이상 추가해 주세요.");
+      return;
+    } else if (paletteName.length === 0) {
+      window.alert("팔레트 이름을 입력해 주세요.");
+      return;
+    }
+
+    try {
+      await addDoc(collection(getFirestore(firebase), "palettes"), {
+        colors,
+        name: paletteName,
+        createdAt: new Date().getTime(),
+        creator: id,
+        author: displayName,
+      });
+
+      setPaletteName("");
+      setColors([]);
+      navigate("/", { replace: true });
+    } catch (error: any) {
+      window.alert(checkError(error.code));
+    }
   };
 
   return (
@@ -114,7 +121,7 @@ const New: React.FC<NewPropsType> = () => {
       <section className={styles.main}>
         <input
           className={styles["input--title"]}
-          value={name}
+          value={paletteName}
           onChange={onPaletteNameChange}
           placeholder="팔레트 이름 (1~20 글자)"
           minLength={1}

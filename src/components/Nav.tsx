@@ -6,10 +6,11 @@ import styles from "./Nav.module.scss";
 import logoImg from "../imgs/nav-logo.png";
 
 const Nav = () => {
+  const { isLoggedIn } = useSelector((state: any) => state.login);
   const location = useLocation();
   const navigate = useNavigate();
-  const { isLoggedIn } = useSelector((state: any) => state.login);
 
+  // url 체크
   useEffect(() => {
     if (
       location.pathname !== "/" &&
@@ -39,7 +40,6 @@ const Nav = () => {
             : classNames(styles.item, styles.logo)
         }
       >
-        {/* <h1>PALETTE VAULT</h1> */}
         <img
           src={logoImg}
           alt="Palette Vault"

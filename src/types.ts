@@ -31,6 +31,7 @@ export interface PalettePropsType {
 }
 
 // etc
+
 export interface reduxStateType {
   login: reduxLoginStateType;
   palettes: reduxPalettesStateType;

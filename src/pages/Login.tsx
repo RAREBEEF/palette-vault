@@ -17,10 +17,11 @@ import Footer from "../components/Footer";
 import checkError from "../tools/checkError";
 
 const Login = () => {
-  const dispatch = useDispatch();
   const [formAction, setFormAction] = useState<"login" | "signUp" | "pwReset">(
     "login"
   );
+  const dispatch = useDispatch();
+
   const [email, setEmail] = useState<string>("");
   const [pw, setPw] = useState<string>("");
   const [pwCheck, setPwCheck] = useState<string>("");
@@ -47,6 +48,7 @@ const Login = () => {
     setPwCheck(value);
   };
 
+  // 회원가입, 로그인 전환
   const onFormChange = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
@@ -57,6 +59,7 @@ const Login = () => {
     }
   };
 
+  // 비밀번호 재설정 전환
   const onPwResetClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
@@ -68,6 +71,8 @@ const Login = () => {
 
     const auth = getAuth();
 
+    //
+    // 로그인
     if (formAction === "login") {
       if (email.length === 0) {
         setAlert("이메일을 입력해 주세요.");
@@ -93,6 +98,8 @@ const Login = () => {
         .catch((error) => {
           setAlert(checkError(error.code));
         });
+      //
+      // 회원가입
     } else if (formAction === "signUp") {
       if (email.length === 0) {
         setAlert("이메일을 입력해 주세요.");
@@ -128,6 +135,8 @@ const Login = () => {
         .catch((error) => {
           window.confirm(checkError(error.code));
         });
+      //
+      // 비밀번호 재설정
     } else if (formAction === "pwReset") {
       const auth = getAuth();
       sendPasswordResetEmail(auth, email)

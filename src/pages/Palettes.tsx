@@ -16,6 +16,8 @@ const Palettes: React.FC<PalettesPropsType> = ({
     login: { isLoggedIn },
     palettes: { data: palettes },
   } = useSelector((state: reduxStateType): reduxStateType => state);
+
+  // 모든 팔레트, 내 팔레트 구분
   const [tab, setTab] = useState<1 | 2>(1);
 
   const onFirstTabClick = () => {
