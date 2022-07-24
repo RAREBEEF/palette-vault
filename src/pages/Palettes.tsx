@@ -7,7 +7,11 @@ import Palette from "../components/Palette";
 import { PalettesPropsType, reduxStateType } from "../types";
 import styles from "./Palettes.module.scss";
 
-const Palettes: React.FC<PalettesPropsType> = ({ myPalettes }) => {
+const Palettes: React.FC<PalettesPropsType> = ({
+  myPalettesId,
+  copyAlertRef,
+  setIsCopyFail,
+}) => {
   const {
     login: { isLoggedIn },
     palettes: { data: palettes },
@@ -51,9 +55,14 @@ const Palettes: React.FC<PalettesPropsType> = ({ myPalettes }) => {
       <section className={styles.tabs}>
         {tab === 1 && (
           <ul className={styles.palettes}>
-            {palettes && palettes.length !== 0 ? (
-              palettes.map((palette) => (
-                <Palette palette={palette} key={palette.id} />
+            {palettes ? (
+              Object.keys(palettes).map((id: string) => (
+                <Palette
+                  paletteId={id}
+                  key={id}
+                  copyAlertRef={copyAlertRef}
+                  setIsCopyFail={setIsCopyFail}
+                />
               ))
             ) : (
               <div className={styles.empty}>
@@ -70,9 +79,14 @@ const Palettes: React.FC<PalettesPropsType> = ({ myPalettes }) => {
         )}
         {tab === 2 && (
           <ul className={styles.palettes}>
-            {myPalettes.length !== 0 ? (
-              myPalettes.map((palette) => (
-                <Palette palette={palette} key={palette.id} />
+            {myPalettesId ? (
+              myPalettesId.map((id) => (
+                <Palette
+                  paletteId={id}
+                  key={id}
+                  copyAlertRef={copyAlertRef}
+                  setIsCopyFail={setIsCopyFail}
+                />
               ))
             ) : (
               <div className={styles.empty}>

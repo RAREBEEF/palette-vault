@@ -31,4 +31,8 @@
   &.Login__form-changer {
     background-color: darkgray;
   }
+  &.Detail__delete {
+    align-self: flex-end;
+    margin-right: 10px;
+  }
 }

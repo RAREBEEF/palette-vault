@@ -120,8 +120,8 @@ const New: React.FC<NewPropsType> = () => {
           minLength={1}
           maxLength={20}
         />
-        <ul className={styles["palette"]}>
-          <div className={styles["colors-wrapper"]}>
+        <div className={styles["palette"]}>
+          <ul className={styles["colors-wrapper"]}>
             {colors.length !== 0 ? (
               colors.map((color, i) => {
                 return (
@@ -149,8 +149,8 @@ const New: React.FC<NewPropsType> = () => {
             ) : (
               <div className={styles.empty}>비어있음</div>
             )}
-          </div>
-        </ul>
+          </ul>
+        </div>
       </section>
 
       <section className={styles.add}>

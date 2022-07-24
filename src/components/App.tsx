@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./App.module.scss";
 import New from "../pages/New";
 import Palettes from "../pages/Palettes";
@@ -11,24 +11,30 @@ import { login } from "../redux/modules/logIn";
 import Login from "../pages/Login";
 import { getPalettesThunk } from "../redux/modules/palettes";
 import { useSelector } from "react-redux";
-import { paletteType, reduxStateType } from "../types";
+import { reduxStateType } from "../types";
 import Loading from "./Loading";
+import Detail from "../pages/Detail";
+import CopyAlert from "./CopyAlert";
 
 function App() {
   const dispatch = useDispatch();
   const [init, setInit] = useState<boolean>(false);
+  const [myPalettesId, setMyPalettesId] = useState<any>({});
+  const [isCopyFail, setIsCopyFail] = useState<boolean>(false);
+  const copyAlertRef = useRef<any>(null);
   const {
     login: { isLoggedIn, userObj },
     palettes: { data: palettes },
   } = useSelector((state: reduxStateType): reduxStateType => state);
-  const [myPalettes, setMyPalettes] = useState<Array<paletteType>>([]);
 
+  // init
   useEffect(() => {
     if (!init && isLoggedIn !== null && palettes !== null) {
       setInit(true);
     }
   }, [init, isLoggedIn, palettes]);
 
+  // 인증 & 팔레트 가져오기
   useEffect(() => {
     dispatch<any>(getPalettesThunk());
 
@@ -56,14 +62,17 @@ function App() {
     });
   }, [dispatch]);
 
+  // 내 팔레트만 별도로 저장
   useEffect(() => {
     if (!palettes || !isLoggedIn) {
       return;
     }
 
-    const temp = palettes.filter((palette) => palette.creator === userObj.id);
+    const my = Object.keys(palettes).filter(
+      (id: string) => palettes[id].creator === userObj.id
+    );
 
-    setMyPalettes(temp);
+    setMyPalettesId(my);
   }, [isLoggedIn, palettes, userObj.id]);
 
   return (
@@ -75,15 +84,34 @@ function App() {
             <Route path="/new" element={<New />} />
             <Route
               path="/profile"
-              element={<Profile myPalettes={myPalettes} />}
+              element={<Profile myPalettesId={myPalettesId} />}
             />
-            <Route path="/" element={<Palettes myPalettes={myPalettes} />} />
+            <Route
+              path="/palette/:id"
+              element={
+                <Detail
+                  copyAlertRef={copyAlertRef}
+                  setIsCopyFail={setIsCopyFail}
+                />
+              }
+            />
+            <Route
+              path="/"
+              element={
+                <Palettes
+                  myPalettesId={myPalettesId}
+                  copyAlertRef={copyAlertRef}
+                  setIsCopyFail={setIsCopyFail}
+                />
+              }
+            />
           </Routes>
           <Nav />
         </Router>
       ) : (
         <Loading />
       )}
+      <CopyAlert isFail={isCopyFail} copyAlertRef={copyAlertRef} />
     </div>
   );
 }

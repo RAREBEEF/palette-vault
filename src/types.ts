@@ -1,12 +1,22 @@
 import React from "react";
 
 // PROPS
+export interface CopyAlertPropsType {
+  isFail: boolean;
+  copyAlertRef: any;
+}
+export interface DetailPropsType {
+  copyAlertRef: any;
+  setIsCopyFail: Function;
+}
 export interface NewPropsType {}
 export interface PalettesPropsType {
-  myPalettes: Array<paletteType> | [];
+  myPalettesId: Array<string>;
+  copyAlertRef: any;
+  setIsCopyFail: Function;
 }
 export interface ProfilePropsType {
-  myPalettes: Array<paletteType> | [];
+  myPalettesId: Array<string>;
 }
 export interface ButtonPropsType {
   text: string;
@@ -15,7 +25,9 @@ export interface ButtonPropsType {
   classes?: Array<string>;
 }
 export interface PalettePropsType {
-  palette: paletteType;
+  paletteId: string;
+  copyAlertRef: any;
+  setIsCopyFail: Function;
 }
 
 // etc
@@ -27,7 +39,6 @@ export interface reduxStateType {
 export interface paletteType {
   name: string;
   colors: Array<string>;
-  id: string;
   createdAt: number;
   creator: string;
   author: string;
@@ -44,7 +55,7 @@ export interface reduxLoginStateType {
 }
 
 export interface reduxPalettesStateType {
-  data: Array<paletteType> | [] | null;
+  data: any;
   loading: boolean;
   error: null | Error;
 }

@@ -10,22 +10,19 @@ import Footer from "../components/Footer";
 import { firebase } from "../fb";
 import { login } from "../redux/modules/logIn";
 import checkError from "../tools/checkError";
-import {
-  ProfilePropsType,
-  reduxLoginStateType,
-  reduxStateType,
-} from "../types";
+import { ProfilePropsType, reduxStateType } from "../types";
 import styles from "./Profile.module.scss";
 
-const Profile: React.FC<ProfilePropsType> = ({ myPalettes }) => {
+const Profile: React.FC<ProfilePropsType> = ({ myPalettesId }) => {
   const navigate = useNavigate();
   const [alert, setAlert] = useState<string>("");
   const [pw, setPw] = useState<string>("");
   const [pwCheck, setPwCheck] = useState<string>("");
   const [displayName, setDisplayName] = useState<string>("");
-  const { userObj } = useSelector(
-    (state: reduxStateType): reduxLoginStateType => state.login
-  );
+  const {
+    login: { userObj },
+    palettes: { data: palettes },
+  } = useSelector((state: reduxStateType): reduxStateType => state);
   const dispatch = useDispatch();
   const onDisplayNameChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -64,9 +61,9 @@ const Profile: React.FC<ProfilePropsType> = ({ myPalettes }) => {
           );
         })
         .then(() => {
-          myPalettes.forEach((palette) => {
-            setDoc(doc(getFirestore(firebase), "palettes", palette.id), {
-              ...palette,
+          myPalettesId.forEach((id: string) => {
+            setDoc(doc(getFirestore(firebase), "palettes", id), {
+              ...palettes[id],
               author: displayName,
             });
           });

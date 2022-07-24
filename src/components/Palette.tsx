@@ -1,23 +1,62 @@
 import { useSelector } from "react-redux";
-import {
-  PalettePropsType,
-  reduxLoginStateType,
-  reduxStateType,
-} from "../types";
+import { PalettePropsType, paletteType, reduxStateType } from "../types";
 import styles from "./Palette.module.scss";
 import deleteIcon from "../icons/trash-can-solid.svg";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { deleteDoc, doc, getFirestore } from "firebase/firestore";
 import { firebase } from "../fb";
 import gsap from "gsap";
+import { Link } from "react-router-dom";
+import checkError from "../tools/checkError";
 
-const Palette: React.FC<PalettePropsType> = ({ palette }) => {
-  const { userObj } = useSelector(
-    (state: reduxStateType): reduxLoginStateType => state.login
-  );
-  const [copyAlert, setCopyAlert] = useState<string>("");
-  const copyAlertRef = useRef<any>(null);
-  const [prevGsap, setPrevGsap] = useState<any>(null);
+const Palette: React.FC<PalettePropsType> = ({
+  paletteId,
+  copyAlertRef,
+  setIsCopyFail,
+}) => {
+  const [palette, setPalette] = useState<paletteType>();
+  const {
+    login: { userObj },
+    palettes: { data: palettes },
+  } = useSelector((state: reduxStateType): reduxStateType => state);
+  let prevGsap: Array<any> = [];
+
+  useEffect(() => {
+    setPalette(palettes[paletteId]);
+  }, [paletteId, palettes]);
+
+  const onColorClick = (e: React.MouseEvent<HTMLLIElement>, color: string) => {
+    e.preventDefault();
+    navigator.clipboard
+      .writeText(color)
+      .then(() => {
+        if (copyAlertRef.current) {
+          if (prevGsap.length !== 0) {
+            prevGsap?.forEach((gsap) => gsap.kill());
+            prevGsap = [];
+          }
+
+          const copyAlert = copyAlertRef.current;
+
+          copyAlert.style.bottom = "-40px";
+
+          const appear = gsap.to(copyAlert, 0.3, {
+            bottom: "120px",
+          });
+
+          const disappear = gsap.to(copyAlert, 0.3, {
+            delay: 1.3,
+            bottom: "-40px",
+          });
+
+          prevGsap.push(appear, disappear);
+          setIsCopyFail(false);
+        }
+      })
+      .catch((error) => {
+        setIsCopyFail(true);
+      });
+  };
 
   const onDeletePalette = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -25,37 +64,20 @@ const Palette: React.FC<PalettePropsType> = ({ palette }) => {
     const ok = window.confirm("팔레트를 삭제하시겠습니까?");
 
     if (ok) {
-      await deleteDoc(doc(getFirestore(firebase), "palettes", palette.id));
+      await deleteDoc(doc(getFirestore(firebase), "palettes", paletteId)).catch(
+        (error) => {
+          window.alert(checkError(error.code));
+        }
+      );
     }
   };
 
-  const onColorClick = (e: React.MouseEvent<HTMLLIElement>, color: string) => {
-    e.preventDefault();
-    navigator.clipboard
-      .writeText(color)
-      .then(() => {
-        setCopyAlert("복사됨");
-        if (copyAlertRef.current) {
-          prevGsap?.kill();
-          copyAlertRef.current.style.opacity = 1;
-          const prev = gsap.to(copyAlertRef.current, 1, {
-            delay: 1,
-            opacity: 0,
-          });
-          setPrevGsap(prev);
-        }
-      })
-      .catch((error) => {
-        setCopyAlert("복사 실패");
-      });
-  };
-
-  return (
+  return palette ? (
     <li className={styles.palette}>
-      <h3 className={styles["palette-name"]}>{palette.name}</h3>
-      <div className={styles["copy-alert"]} ref={copyAlertRef}>
-        {copyAlert}
-      </div>
+      <Link to={`/palette/${paletteId}`}>
+        <h3 className={styles["palette-name"]}>{palette.name}</h3>
+      </Link>
+
       {palette.creator === userObj.id && (
         <button className={styles["btn--delete"]} onClick={onDeletePalette}>
           <img
@@ -81,6 +103,8 @@ const Palette: React.FC<PalettePropsType> = ({ palette }) => {
       </ul>
       <span className={styles.author}>By {palette.author}</span>
     </li>
+  ) : (
+    <></>
   );
 };
 

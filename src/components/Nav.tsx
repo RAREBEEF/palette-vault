@@ -15,7 +15,8 @@ const Nav = () => {
       location.pathname !== "/" &&
       location.pathname !== "/login" &&
       location.pathname !== "/profile" &&
-      location.pathname !== "/new"
+      location.pathname !== "/new" &&
+      /^palette\//gi.test(location.pathname)
     ) {
       navigate("/", { replace: true });
     } else if (

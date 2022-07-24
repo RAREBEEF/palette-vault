@@ -44,16 +44,16 @@ export const getPalettesThunk = () => {
       );
 
       onSnapshot(q, (querySnapshot) => {
-        const palettesData: any = [];
+        const palettesData: any = {};
 
         querySnapshot.forEach((doc) => {
-          palettesData.push({ ...doc.data(), id: doc.id });
+          palettesData[doc.id] = { ...doc.data() };
         });
 
         dispatch(getPalettesSuccess(palettesData));
       });
     } catch (error) {
-      window.alert("팔레트를 불러오는데 실패하였습니다.")
+      window.alert("팔레트를 불러오는데 실패하였습니다.");
       dispatch(getPalettesFail(error));
     }
   };
@@ -72,7 +72,7 @@ export const reducer = (prev = initialState, action: any) => {
         ...prev,
         loading: false,
         error: action.error,
-        data: [],
+        data: {},
       };
     }
     default:
