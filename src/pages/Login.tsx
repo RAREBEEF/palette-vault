@@ -14,13 +14,14 @@ import Button from "../components/Button";
 import styles from "./Login.module.scss";
 import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
-import checkError from "../tools/checkError";
+import useCheckError from "../hooks/useCheckError";
 
 const Login = () => {
   const [formAction, setFormAction] = useState<"login" | "signUp" | "pwReset">(
     "login"
   );
   const dispatch = useDispatch();
+  const checkError = useCheckError();
 
   const [email, setEmail] = useState<string>("");
   const [pw, setPw] = useState<string>("");

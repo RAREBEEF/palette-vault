@@ -3,7 +3,7 @@
 .container {
   width: 90vw;
   min-width: calc($minWidth - 20px);
-
+  max-width: 1500px;
   .header-wrapper {
     .header {
       text-align: center;
@@ -18,6 +18,7 @@
     display: flex;
     justify-content: space-evenly;
     height: 50px;
+
     .tab-nav__item {
       flex-basis: 50px;
       transition: all 0.2s;
@@ -45,43 +46,68 @@
   }
 
   .tabs {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     flex-grow: 1;
     flex-basis: 50px;
+    text-align: center;
+    border-left: 1px solid $theme;
+    border-right: 1px solid $theme;
+    border-bottom: 1px solid $theme;
+    border-radius: 0 0 15px 15px;
+
+    .search {
+      height: 30px;
+      outline: none;
+      border: 1px solid $theme;
+      border-radius: 5px;
+      margin: {
+        left: 15px;
+        right: 15px;
+        top: 40px;
+        bottom: 10px;
+      }
+      padding: {
+        left: 10px;
+        right: 10px;
+      }
+      font: {
+        size: 16px;
+      }
+    }
 
     .palettes {
+      text-align: start;
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
-      border-left: 1px solid $theme;
-      border-right: 1px solid $theme;
-      border-bottom: 1px solid $theme;
-      border-radius: 0 0 15px 15px;
-      height: 100%;
+      flex-grow: 1;
       min-height: 50vh;
-      padding: {
+    }
+
+    .load-more {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: {
         top: 50px;
-        bottom: 50px;
+        bottom: 30px;
+        left: 20px;
+        right: 20px;
       }
     }
   }
 }
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 900px) {
   .container {
     .tabs {
       .palettes {
         flex-direction: column;
         justify-content: flex-start;
         align-items: center;
-        // .palette {
-        //   width: 80vw;
-        //   min-width: 240px;
-        //   margin: 10px;
-        //   .colors-wrapper {
-        //     width: auto;
-        //     max-width: 300%;
-        //   }
-        // }
+        gap: 0;
       }
     }
   }

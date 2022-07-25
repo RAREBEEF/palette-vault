@@ -59,4 +59,5 @@ export interface reduxPalettesStateType {
   data: any;
   loading: boolean;
   error: null | Error;
+  lastLoad: any;
 }

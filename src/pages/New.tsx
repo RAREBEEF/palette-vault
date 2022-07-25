@@ -1,7 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import checkColor from "../tools/checkColor";
-import { NewPropsType, reduxStateType, userObjType } from "../types";
+import { NewPropsType, reduxStateType } from "../types";
 import Button from "../components/Button";
 import styles from "./New.module.scss";
 import deleteIcon from "../icons/trash-can-solid.svg";
@@ -9,16 +8,25 @@ import { addDoc, collection, getFirestore } from "firebase/firestore";
 import { firebase } from "../fb";
 import { useSelector } from "react-redux";
 import Footer from "../components/Footer";
-import checkError from "../tools/checkError";
+import useCheckError from "../hooks/useCheckError";
+import { useDispatch } from "react-redux";
+import { getPalettesThunk } from "../redux/modules/palettes";
+import useCheckColor from "../hooks/useCheckColor";
 
 const New: React.FC<NewPropsType> = () => {
-  const { id, displayName } = useSelector(
-    (state: reduxStateType): userObjType => state.login.userObj
-  );
+  const {
+    login: {
+      userObj: { id, displayName },
+    },
+    palettes: { lastLoad },
+  } = useSelector((state: reduxStateType): reduxStateType => state);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const checkColor = useCheckColor();
+  const checkError = useCheckError();
 
   // <input type="color" /> ref
-  const colorPickerRef = useRef<any>(null);
+  const colorPickerRef = useRef<HTMLInputElement>(null);
 
   // 색상 배열
   const [colors, setColors] = useState<Array<string>>([]);
@@ -103,6 +111,7 @@ const New: React.FC<NewPropsType> = () => {
 
       setPaletteName("");
       setColors([]);
+      dispatch<any>(getPalettesThunk(lastLoad, true));
       navigate("/", { replace: true });
     } catch (error: any) {
       window.alert(checkError(error.code));

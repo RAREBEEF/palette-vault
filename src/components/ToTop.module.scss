@@ -1,0 +1,31 @@
+@import "../var.scss";
+
+.container {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  height: 40px;
+  width: 40px;
+  background-color: #f87060;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  opacity: 0;
+  pointer-events: none;
+  &:hover {
+    filter: brightness(1.2);
+  }
+
+  &.show {
+    pointer-events: all;
+    opacity: 0.8;
+  }
+
+  .icon--up {
+    height: 30px;
+    width: 30px;
+  }
+}

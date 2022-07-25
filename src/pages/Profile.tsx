@@ -9,7 +9,7 @@ import Button from "../components/Button";
 import Footer from "../components/Footer";
 import { firebase } from "../fb";
 import { login } from "../redux/modules/logIn";
-import checkError from "../tools/checkError";
+import useCheckError from "../hooks/useCheckError";
 import { ProfilePropsType, reduxStateType } from "../types";
 import styles from "./Profile.module.scss";
 
@@ -20,6 +20,7 @@ const Profile: React.FC<ProfilePropsType> = ({ myPalettesId }) => {
   } = useSelector((state: reduxStateType): reduxStateType => state);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const checkError = useCheckError();
 
   const [alert, setAlert] = useState<string>("");
   const [pw, setPw] = useState<string>("");

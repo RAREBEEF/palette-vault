@@ -15,6 +15,7 @@ import { reduxStateType } from "../types";
 import Loading from "./Loading";
 import Detail from "../pages/Detail";
 import CopyAlert from "./CopyAlert";
+import ToTop from "./ToTop";
 
 function App() {
   const {
@@ -23,6 +24,8 @@ function App() {
   } = useSelector((state: reduxStateType): reduxStateType => state);
   const dispatch = useDispatch();
 
+  const appRef = useRef<HTMLDivElement>(null);
+
   // init
   const [init, setInit] = useState<boolean>(false);
   // 내 팔레트 id
@@ -30,7 +33,7 @@ function App() {
   // 복사 실패 여부
   const [isCopyFail, setIsCopyFail] = useState<boolean>(false);
   // 복사 알림 ref
-  const copyAlertRef = useRef<any>(null);
+  const copyAlertRef = useRef<HTMLDivElement>(null);
 
   // init
   useEffect(() => {
@@ -70,6 +73,7 @@ function App() {
   // 내 팔레트만 별도로 저장
   useEffect(() => {
     if (!palettes || !isLoggedIn) {
+      setMyPalettesId([]);
       return;
     }
 
@@ -81,7 +85,7 @@ function App() {
   }, [isLoggedIn, palettes, userObj.id]);
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} ref={appRef}>
       {init ? (
         <Router>
           <Routes>
@@ -117,6 +121,7 @@ function App() {
         <Loading />
       )}
       <CopyAlert isFail={isCopyFail} copyAlertRef={copyAlertRef} />
+      <ToTop />
     </div>
   );
 }

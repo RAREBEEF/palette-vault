@@ -5,10 +5,8 @@ import Footer from "../components/Footer";
 import { DetailPropsType, paletteType, reduxStateType } from "../types";
 import styles from "./Detail.module.scss";
 import Button from "../components/Button";
-import { deleteDoc, doc, getFirestore } from "firebase/firestore";
-import { firebase } from "../fb";
-import checkError from "../tools/checkError";
 import useCopyAlert from "../hooks/useAlert";
+import useDelete from "../hooks/useDelete";
 
 const Detail: React.FC<DetailPropsType> = ({ copyAlertRef, setIsCopyFail }) => {
   const {
@@ -17,6 +15,7 @@ const Detail: React.FC<DetailPropsType> = ({ copyAlertRef, setIsCopyFail }) => {
   } = useSelector((state: reduxStateType): reduxStateType => state);
   const navigate = useNavigate();
   const params = useParams();
+  const deletePalete = useDelete();
 
   // 출력할 팔레트 정보
   const [palette, setPalette] = useState<paletteType>();
@@ -58,13 +57,8 @@ const Detail: React.FC<DetailPropsType> = ({ copyAlertRef, setIsCopyFail }) => {
     const ok = window.confirm("팔레트를 삭제하시겠습니까?");
 
     if (ok && params.id) {
-      await deleteDoc(doc(getFirestore(firebase), "palettes", params.id))
-        .then(() => {
-          navigate("/", { replace: true });
-        })
-        .catch((error) => {
-          window.alert(checkError(error.code));
-        });
+      deletePalete(params.id);
+      navigate("/", { replace: true });
     }
   };
 

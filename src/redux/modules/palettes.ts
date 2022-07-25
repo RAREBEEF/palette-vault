@@ -3,9 +3,13 @@ import { paletteType, reduxPalettesStateType } from "../../types";
 import {
   collection,
   query,
-  onSnapshot,
   getFirestore,
   orderBy,
+  limit,
+  startAfter,
+  Query,
+  onSnapshot,
+  endAt,
 } from "firebase/firestore";
 import React from "react";
 
@@ -19,10 +23,12 @@ const getPalettesStart = () => {
   };
 };
 
-const getPalettesSuccess = (data: paletteType) => {
+const getPalettesSuccess = (data: paletteType, lastLoad: any, refresh: any) => {
   return {
     type: GET_PALETTES_SUCCESS,
     data,
+    lastLoad,
+    refresh,
   };
 };
 
@@ -33,24 +39,49 @@ const getPalettesFail = (error: unknown) => {
   };
 };
 
-export const getPalettesThunk = () => {
+export const getPalettesThunk = (
+  lastLoad: any = null,
+  refresh: boolean = false
+) => {
   return async (dispatch: React.Dispatch<any>) => {
     try {
       dispatch(getPalettesStart());
 
-      const q = query(
-        collection(getFirestore(firebase), "palettes"),
-        orderBy("createdAt", "desc")
-      );
+      let q: Query;
+
+      if (refresh) {
+        console.log("refresh");
+        q = query(
+          collection(getFirestore(firebase), "palettes"),
+          orderBy("createdAt", "desc"),
+          endAt(lastLoad)
+        );
+      } else if (lastLoad) {
+        console.log("load more");
+        q = query(
+          collection(getFirestore(firebase), "palettes"),
+          orderBy("createdAt", "desc"),
+          startAfter(lastLoad),
+          limit(10)
+        );
+      } else {
+        console.log("first");
+        q = query(
+          collection(getFirestore(firebase), "palettes"),
+          orderBy("createdAt", "desc"),
+          limit(10)
+        );
+      }
 
       onSnapshot(q, (querySnapshot) => {
         const palettesData: any = {};
+        const lastLoad = querySnapshot.docs[querySnapshot.docs.length - 1];
 
         querySnapshot.forEach((doc) => {
           palettesData[doc.id] = { ...doc.data() };
         });
 
-        dispatch(getPalettesSuccess(palettesData));
+        dispatch(getPalettesSuccess(palettesData, lastLoad, refresh));
       });
     } catch (error) {
       window.alert("팔레트를 불러오는데 실패하였습니다.");
@@ -62,10 +93,17 @@ export const getPalettesThunk = () => {
 export const reducer = (prev = initialState, action: any) => {
   switch (action.type) {
     case GET_PALETTES_START: {
-      return { ...prev, loading: true, error: null };
+      return { ...prev, loading: true, error: null, lastLoad: null };
     }
     case GET_PALETTES_SUCCESS: {
-      return { ...prev, loading: false, error: null, data: action.data };
+      console.log(action.data);
+      return {
+        ...prev,
+        loading: false,
+        error: null,
+        data: action.refresh ? action.data : { ...prev.data, ...action.data },
+        lastLoad: action.lastLoad,
+      };
     }
     case GET_PALETTES_FAIL: {
       return {
@@ -73,6 +111,7 @@ export const reducer = (prev = initialState, action: any) => {
         loading: false,
         error: action.error,
         data: {},
+        lastLoad: null,
       };
     }
     default:
@@ -84,4 +123,5 @@ const initialState: reduxPalettesStateType = {
   data: null,
   loading: false,
   error: null,
+  lastLoad: null,
 };

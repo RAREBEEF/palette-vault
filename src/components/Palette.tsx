@@ -3,11 +3,9 @@ import { PalettePropsType, paletteType, reduxStateType } from "../types";
 import styles from "./Palette.module.scss";
 import deleteIcon from "../icons/trash-can-solid.svg";
 import React, { useEffect, useState } from "react";
-import { deleteDoc, doc, getFirestore } from "firebase/firestore";
-import { firebase } from "../fb";
 import { Link } from "react-router-dom";
-import checkError from "../tools/checkError";
 import useCopyAlert from "../hooks/useAlert";
+import useDelete from "../hooks/useDelete";
 
 const Palette: React.FC<PalettePropsType> = ({
   paletteId,
@@ -18,6 +16,7 @@ const Palette: React.FC<PalettePropsType> = ({
     login: { userObj },
     palettes: { data: palettes },
   } = useSelector((state: reduxStateType): reduxStateType => state);
+  const deletePalete = useDelete();
 
   // 출력할 팔레트
   const [palette, setPalette] = useState<paletteType>();
@@ -50,15 +49,7 @@ const Palette: React.FC<PalettePropsType> = ({
   const onDeletePalette = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    const ok = window.confirm("팔레트를 삭제하시겠습니까?");
-
-    if (ok) {
-      await deleteDoc(doc(getFirestore(firebase), "palettes", paletteId)).catch(
-        (error) => {
-          window.alert(checkError(error.code));
-        }
-      );
-    }
+    deletePalete(paletteId);
   };
 
   return palette ? (

@@ -35,4 +35,7 @@
     align-self: flex-end;
     margin-right: 10px;
   }
+  &.Palettes__load-more {
+    flex-grow: 1;
+  }
 }
