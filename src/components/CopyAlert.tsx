@@ -1,10 +1,10 @@
 import { CopyAlertPropsType } from "../types";
 import styles from "./CopyAlert.module.scss";
 
-const CopyAlert: React.FC<CopyAlertPropsType> = ({ isFail, copyAlertRef }) => {
+const CopyAlert: React.FC<CopyAlertPropsType> = ({ copyAlertRef }) => {
   return (
     <div ref={copyAlertRef} className={styles.container}>
-      {isFail ? "복사 실패" : "복사됨"}
+      복사됨
     </div>
   );
 };

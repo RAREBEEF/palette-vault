@@ -15,6 +15,7 @@ import styles from "./Login.module.scss";
 import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
 import useCheckError from "../hooks/useCheckError";
+import useInput from "../hooks/useInput";
 
 const Login = () => {
   const [formAction, setFormAction] = useState<"login" | "signUp" | "pwReset">(
@@ -23,31 +24,11 @@ const Login = () => {
   const dispatch = useDispatch();
   const checkError = useCheckError();
 
-  const [email, setEmail] = useState<string>("");
-  const [pw, setPw] = useState<string>("");
-  const [pwCheck, setPwCheck] = useState<string>("");
-  const [displayName, setDisplayName] = useState<string>("");
+  const { value: email, onChange: onEmailChange } = useInput();
+  const { value: pw, onChange: onPwChange } = useInput();
+  const { value: pwCheck, onChange: onPwCheckChange } = useInput();
+  const { value: displayName, onChange: onDisplayNameChange } = useInput();
   const [alert, setAlert] = useState<string>("");
-
-  const onEmailChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    setEmail(value);
-  };
-
-  const onDisplayNameChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    setDisplayName(value);
-  };
-
-  const onPwChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    setPw(value);
-  };
-
-  const onPwCheckChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    setPwCheck(value);
-  };
 
   // 회원가입, 로그인 전환
   const onFormChange = (e: React.MouseEvent<HTMLButtonElement>) => {

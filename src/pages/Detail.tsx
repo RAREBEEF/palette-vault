@@ -5,10 +5,10 @@ import Footer from "../components/Footer";
 import { DetailPropsType, paletteType, reduxStateType } from "../types";
 import styles from "./Detail.module.scss";
 import Button from "../components/Button";
-import useCopyAlert from "../hooks/useAlert";
 import useDelete from "../hooks/useDelete";
+import useCopy from "../hooks/useCopy";
 
-const Detail: React.FC<DetailPropsType> = ({ copyAlertRef, setIsCopyFail }) => {
+const Detail: React.FC<DetailPropsType> = ({ copyAlertRef }) => {
   const {
     login: { userObj },
     palettes: { data: palettes },
@@ -16,13 +16,10 @@ const Detail: React.FC<DetailPropsType> = ({ copyAlertRef, setIsCopyFail }) => {
   const navigate = useNavigate();
   const params = useParams();
   const deletePalete = useDelete();
+  const copy = useCopy(copyAlertRef);
 
   // 출력할 팔레트 정보
   const [palette, setPalette] = useState<paletteType>();
-
-  // 복사 알림
-  let prevAnimations: Array<any> = [];
-  const showAlert = useCopyAlert(copyAlertRef, prevAnimations);
 
   // id 체크, 복사할 팔레트 state에 저장
   useEffect(() => {
@@ -38,16 +35,8 @@ const Detail: React.FC<DetailPropsType> = ({ copyAlertRef, setIsCopyFail }) => {
   // 색상 복사
   const onColorClick = (e: React.MouseEvent<HTMLLIElement>, color: string) => {
     e.preventDefault();
-    setIsCopyFail(false);
 
-    navigator.clipboard
-      .writeText(color)
-      .then(() => {
-        showAlert && showAlert();
-      })
-      .catch((error) => {
-        setIsCopyFail(true);
-      });
+    copy(color);
   };
 
   // 팔레트 삭제

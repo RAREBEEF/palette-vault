@@ -12,6 +12,7 @@ import { login } from "../redux/modules/logIn";
 import useCheckError from "../hooks/useCheckError";
 import { ProfilePropsType, reduxStateType } from "../types";
 import styles from "./Profile.module.scss";
+import useInput from "../hooks/useInput";
 
 const Profile: React.FC<ProfilePropsType> = ({ myPalettesId }) => {
   const {
@@ -22,16 +23,14 @@ const Profile: React.FC<ProfilePropsType> = ({ myPalettesId }) => {
   const navigate = useNavigate();
   const checkError = useCheckError();
 
+  const { value: pw, onChange: onPwChange } = useInput();
+  const { value: pwCheck, onChange: onPwCheckChange } = useInput();
+  const {
+    value: displayName,
+    onChange: onDisplayNameChange,
+    setValue: setDisplayName,
+  } = useInput();
   const [alert, setAlert] = useState<string>("");
-  const [pw, setPw] = useState<string>("");
-  const [pwCheck, setPwCheck] = useState<string>("");
-  const [displayName, setDisplayName] = useState<string>("");
-
-  const onDisplayNameChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-
-    setDisplayName(value);
-  };
 
   const onDisplayNameChangeClick = async (
     e: React.FormEvent<HTMLFormElement>
@@ -85,18 +84,6 @@ const Profile: React.FC<ProfilePropsType> = ({ myPalettesId }) => {
 
     const auth = getAuth();
     auth.signOut();
-  };
-
-  const onPwChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-
-    setPw(value);
-  };
-
-  const onPwCheckChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-
-    setPwCheck(value);
   };
 
   const onPwChangeClick = (e: React.FormEvent<HTMLFormElement>) => {

@@ -1,11 +1,14 @@
 import gsap from "gsap";
 
-const useCopyAlert = (copyAlertRef: any, prevAnimations: Array<any>) => {
+const useCopyAlert = (copyAlertRef: any) => {
   if (!copyAlertRef.current) {
     return;
   }
 
+  let prevAnimations: Array<GSAPAnimation> = [];
+
   const showAlert = () => {
+    console.log(prevAnimations);
     if (prevAnimations.length !== 0) {
       prevAnimations?.forEach((gsap) => gsap.kill());
       prevAnimations = [];

@@ -6,6 +6,7 @@ import Button from "../components/Button";
 import Footer from "../components/Footer";
 import Loading from "../components/Loading";
 import Palette from "../components/Palette";
+import useInput from "../hooks/useInput";
 import { getPalettesThunk } from "../redux/modules/palettes";
 import { PalettesPropsType, reduxStateType } from "../types";
 import styles from "./Palettes.module.scss";
@@ -13,7 +14,6 @@ import styles from "./Palettes.module.scss";
 const Palettes: React.FC<PalettesPropsType> = ({
   myPalettesId,
   copyAlertRef,
-  setIsCopyFail,
 }) => {
   const {
     login: { isLoggedIn },
@@ -24,7 +24,7 @@ const Palettes: React.FC<PalettesPropsType> = ({
   // 모든 팔레트, 내 팔레트 구분
   const [tab, setTab] = useState<1 | 2>(1);
 
-  const [searchText, setSearchText] = useState<string>("");
+  const { value: searchText, onChange: onSearchTextChange } = useInput();
 
   const onFirstTabClick = () => {
     setTab(1);
@@ -32,12 +32,6 @@ const Palettes: React.FC<PalettesPropsType> = ({
 
   const onSecondTabClick = () => {
     setTab(2);
-  };
-
-  const onSearchTextChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-
-    setSearchText(value);
   };
 
   const onLoadMoreClick = () => {
@@ -91,7 +85,6 @@ const Palettes: React.FC<PalettesPropsType> = ({
                       paletteId={id}
                       key={id}
                       copyAlertRef={copyAlertRef}
-                      setIsCopyFail={setIsCopyFail}
                     />
                   );
                 } else {
@@ -105,7 +98,6 @@ const Palettes: React.FC<PalettesPropsType> = ({
                         paletteId={id}
                         key={id}
                         copyAlertRef={copyAlertRef}
-                        setIsCopyFail={setIsCopyFail}
                       />
                     );
                   } else {
@@ -136,7 +128,6 @@ const Palettes: React.FC<PalettesPropsType> = ({
                       paletteId={id}
                       key={id}
                       copyAlertRef={copyAlertRef}
-                      setIsCopyFail={setIsCopyFail}
                     />
                   );
                 } else {
@@ -150,7 +141,6 @@ const Palettes: React.FC<PalettesPropsType> = ({
                         paletteId={id}
                         key={id}
                         copyAlertRef={copyAlertRef}
-                        setIsCopyFail={setIsCopyFail}
                       />
                     );
                   } else {

@@ -4,26 +4,19 @@ import styles from "./Palette.module.scss";
 import deleteIcon from "../icons/trash-can-solid.svg";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import useCopyAlert from "../hooks/useAlert";
 import useDelete from "../hooks/useDelete";
+import useCopy from "../hooks/useCopy";
 
-const Palette: React.FC<PalettePropsType> = ({
-  paletteId,
-  copyAlertRef,
-  setIsCopyFail,
-}) => {
+const Palette: React.FC<PalettePropsType> = ({ paletteId, copyAlertRef }) => {
   const {
     login: { userObj },
     palettes: { data: palettes },
   } = useSelector((state: reduxStateType): reduxStateType => state);
   const deletePalete = useDelete();
+  const copy = useCopy(copyAlertRef);
 
   // 출력할 팔레트
   const [palette, setPalette] = useState<paletteType>();
-
-  // 복사 알림
-  let prevAnimations: Array<any> = [];
-  const showAlert = useCopyAlert(copyAlertRef, prevAnimations);
 
   // 출력할 팔레트 정보를 state에 저장
   useEffect(() => {
@@ -33,16 +26,8 @@ const Palette: React.FC<PalettePropsType> = ({
   // 색상 복사
   const onColorClick = (e: React.MouseEvent<HTMLLIElement>, color: string) => {
     e.preventDefault();
-    setIsCopyFail(false);
 
-    navigator.clipboard
-      .writeText(color)
-      .then(() => {
-        showAlert && showAlert();
-      })
-      .catch((error) => {
-        setIsCopyFail(true);
-      });
+    copy(color);
   };
 
   // 팔레트 삭제

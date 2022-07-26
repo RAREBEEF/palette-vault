@@ -12,6 +12,7 @@ import useCheckError from "../hooks/useCheckError";
 import { useDispatch } from "react-redux";
 import { getPalettesThunk } from "../redux/modules/palettes";
 import useCheckColor from "../hooks/useCheckColor";
+import useInput from "../hooks/useInput";
 
 const New: React.FC<NewPropsType> = () => {
   const {
@@ -31,21 +32,17 @@ const New: React.FC<NewPropsType> = () => {
   // 색상 배열
   const [colors, setColors] = useState<Array<string>>([]);
   // 색상 값
-  const [colorValue, setColorValue] = useState<string>("");
+  const {
+    value: colorValue,
+    onChange: onColorValueChange,
+    setValue: setColorValue,
+  } = useInput();
   // 팔레트 이름
-  const [paletteName, setPaletteName] = useState<string>("");
-
-  const onPaletteNameChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    const { value } = e.target;
-    setPaletteName(value);
-  };
-
-  const onColorValueChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    const { value } = e.target;
-    setColorValue(value);
-  };
+  const {
+    value: paletteName,
+    onChange: onPaletteNameChange,
+    setValue: setPaletteName,
+  } = useInput();
 
   const onAddColor = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();

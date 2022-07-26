@@ -30,8 +30,6 @@ function App() {
   const [init, setInit] = useState<boolean>(false);
   // 내 팔레트 id
   const [myPalettesId, setMyPalettesId] = useState<Array<string>>([]);
-  // 복사 실패 여부
-  const [isCopyFail, setIsCopyFail] = useState<boolean>(false);
   // 복사 알림 ref
   const copyAlertRef = useRef<HTMLDivElement>(null);
 
@@ -97,12 +95,7 @@ function App() {
             />
             <Route
               path="/palette/:id"
-              element={
-                <Detail
-                  copyAlertRef={copyAlertRef}
-                  setIsCopyFail={setIsCopyFail}
-                />
-              }
+              element={<Detail copyAlertRef={copyAlertRef} />}
             />
             <Route
               path="/"
@@ -110,7 +103,6 @@ function App() {
                 <Palettes
                   myPalettesId={myPalettesId}
                   copyAlertRef={copyAlertRef}
-                  setIsCopyFail={setIsCopyFail}
                 />
               }
             />
@@ -120,7 +112,7 @@ function App() {
       ) : (
         <Loading />
       )}
-      <CopyAlert isFail={isCopyFail} copyAlertRef={copyAlertRef} />
+      <CopyAlert copyAlertRef={copyAlertRef} />
       <ToTop />
     </div>
   );

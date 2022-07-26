@@ -2,18 +2,15 @@ import React from "react";
 
 // PROPS
 export interface CopyAlertPropsType {
-  isFail: boolean;
   copyAlertRef: any;
 }
 export interface DetailPropsType {
   copyAlertRef: any;
-  setIsCopyFail: Function;
 }
 export interface NewPropsType {}
 export interface PalettesPropsType {
   myPalettesId: Array<string>;
   copyAlertRef: any;
-  setIsCopyFail: Function;
 }
 export interface ProfilePropsType {
   myPalettesId: Array<string>;
@@ -27,7 +24,6 @@ export interface ButtonPropsType {
 export interface PalettePropsType {
   paletteId: string;
   copyAlertRef: any;
-  setIsCopyFail: Function;
 }
 
 // etc
