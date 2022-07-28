@@ -83,7 +83,6 @@
       justify-content: center;
       flex-wrap: wrap;
       flex-grow: 1;
-      min-height: 50vh;
     }
 
     .load-more {
@@ -104,9 +103,9 @@
   .container {
     .tabs {
       .palettes {
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
+        // flex-direction: column;
+        // justify-content: flex-start;
+        // align-items: center;
         gap: 0;
       }
     }
