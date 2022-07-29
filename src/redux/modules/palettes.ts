@@ -60,13 +60,13 @@ export const getPalettesThunk = (
           collection(getFirestore(firebase), "palettes"),
           orderBy("createdAt", "desc"),
           startAfter(lastLoad),
-          limit(10)
+          limit(12)
         );
       } else {
         q = query(
           collection(getFirestore(firebase), "palettes"),
           orderBy("createdAt", "desc"),
-          limit(10)
+          limit(12)
         );
       }
 
