@@ -17,7 +17,6 @@ const Detail: React.FC<DetailPropsType> = ({ copyAlertRef }) => {
   const params = useParams();
   const deletePalete = useDelete();
   const copy = useCopy(copyAlertRef);
-
   // 출력할 팔레트 정보
   const [palette, setPalette] = useState<paletteType>();
 
@@ -25,12 +24,10 @@ const Detail: React.FC<DetailPropsType> = ({ copyAlertRef }) => {
   useEffect(() => {
     if (!params.id) {
       return;
-    } else if (!palettes[params.id]) {
-      navigate("/", { replace: true });
     }
 
     setPalette(palettes[params.id]);
-  }, [navigate, palettes, params, params.id]);
+  }, [navigate, palettes, params]);
 
   // 색상 복사
   const onColorClick = (e: React.MouseEvent<HTMLLIElement>, color: string) => {

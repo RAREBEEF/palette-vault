@@ -1,8 +1,15 @@
 @import "./pages.scss";
 
 .container {
+  .img--logo {
+    width: 50%;
+    align-self: center;
+    margin: {
+      bottom: 30px;
+    }
+  }
   .main {
-    padding-top: 60px;
+    padding-top: 90px;
     transform: translateY(-60px);
     flex-grow: 1;
     align-self: center;
@@ -41,25 +48,6 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
-
-      // .form-changer {
-      //   cursor: pointer;
-      //   background: none;
-      //   border: none;
-      //   text-decoration-line: underline;
-      //   width: fit-content;
-      //   align-self: center;
-      //   font: {
-      //     weight: 500;
-      //   }
-      // }
     }
   }
 }
-
-// @media screen and (max-width: 350px) {
-//   .container {
-//     .main {
-//     }
-//   }
-// }

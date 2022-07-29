@@ -98,7 +98,7 @@ function App() {
               element={<Detail copyAlertRef={copyAlertRef} />}
             />
             <Route
-              path="/"
+              path="/*"
               element={
                 <Palettes
                   myPalettesId={myPalettesId}

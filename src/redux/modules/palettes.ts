@@ -50,14 +50,12 @@ export const getPalettesThunk = (
       let q: Query;
 
       if (refresh) {
-        console.log("refresh");
         q = query(
           collection(getFirestore(firebase), "palettes"),
           orderBy("createdAt", "desc"),
           endAt(lastLoad)
         );
       } else if (lastLoad) {
-        console.log("load more");
         q = query(
           collection(getFirestore(firebase), "palettes"),
           orderBy("createdAt", "desc"),
@@ -65,7 +63,6 @@ export const getPalettesThunk = (
           limit(10)
         );
       } else {
-        console.log("first");
         q = query(
           collection(getFirestore(firebase), "palettes"),
           orderBy("createdAt", "desc"),
@@ -96,7 +93,6 @@ export const reducer = (prev = initialState, action: any) => {
       return { ...prev, loading: true, error: null, lastLoad: null };
     }
     case GET_PALETTES_SUCCESS: {
-      console.log(action.data);
       return {
         ...prev,
         loading: false,

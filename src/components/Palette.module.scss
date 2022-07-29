@@ -11,8 +11,9 @@
     border: 0.1px solid lightgray;
     border-radius: 5px;
     display: flex;
-    width: 40vw;
+    width: 30vw;
     max-width: 400px;
+    min-width: 200px;
     height: 150px;
 
     .color {
@@ -23,7 +24,8 @@
       flex-shrink: 1;
       cursor: pointer;
       overflow: hidden;
-      width: 100%;
+      width: 200%;
+      max-width: 100%;
 
       &:hover {
         flex-shrink: 0.8;
@@ -93,7 +95,7 @@
   }
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 700px) {
   .palette {
     width: 80vw;
     min-width: 240px;

@@ -2,7 +2,7 @@
 
 .container {
   // Nav height
-  padding-top: 120px;
+  padding-top: 60px;
   //
   height: 100vh;
   min-height: -webkit-fill-available;
@@ -70,9 +70,6 @@
 
 @media screen and (max-width: 350px) {
   .container {
-    // Nav height
-    padding-top: 100px;
-    //
     .header-wrapper {
       margin: {
         top: 10px;

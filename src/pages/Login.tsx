@@ -16,6 +16,7 @@ import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
 import useCheckError from "../hooks/useCheckError";
 import useInput from "../hooks/useInput";
+import logoImg from "../imgs/login-logo.png";
 
 const Login = () => {
   const [formAction, setFormAction] = useState<"login" | "signUp" | "pwReset">(
@@ -149,8 +150,12 @@ const Login = () => {
           {formAction === "login" ? "로그인" : "회원가입"}
         </h2>
       </section>
-
       <form className={styles.main}>
+        <img
+          src={logoImg}
+          alt="Palette Vault"
+          className={styles["img--logo"]}
+        />
         <input
           className={styles["input--email"]}
           type="text"

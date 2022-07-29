@@ -3,32 +3,19 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import styles from "./Nav.module.scss";
-import logoImg from "../imgs/nav-logo.png";
+import logoImg from "../imgs/logo512.png";
+import useCheckPath from "../hooks/useCheckPath";
 
 const Nav = () => {
   const { isLoggedIn } = useSelector((state: any) => state.login);
   const location = useLocation();
   const navigate = useNavigate();
+  const checkPath = useCheckPath();
 
   // url 체크
   useEffect(() => {
-    if (
-      location.pathname !== "/" &&
-      location.pathname !== "/login" &&
-      location.pathname !== "/profile" &&
-      location.pathname !== "/new" &&
-      /^palette\//gi.test(location.pathname)
-    ) {
-      navigate("/", { replace: true });
-    } else if (
-      !isLoggedIn &&
-      (location.pathname === "/new" || location.pathname === "/profile")
-    ) {
-      navigate("/login", { replace: true });
-    } else if (isLoggedIn && location.pathname === "/login") {
-      navigate("/", { replace: true });
-    }
-  }, [isLoggedIn, location.pathname, navigate]);
+    checkPath(location.pathname);
+  }, [checkPath, isLoggedIn, location, navigate]);
 
   return (
     <nav className={styles.container}>
@@ -64,7 +51,7 @@ const Nav = () => {
             isActive ? classNames(styles.active, styles.item) : styles.item
           }
         >
-          프로필
+          {isLoggedIn ? "프로필" : "로그인"}
         </NavLink>
       </div>
     </nav>

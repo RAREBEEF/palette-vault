@@ -11,10 +11,13 @@
   gap: 30px;
   background-color: white;
   color: gray;
-  padding: 30px 20px;
+  padding: {
+    left: 20px;
+    right: 20px;
+  }
   border-bottom: 0.5px solid lightgray;
   box-shadow: 0px 1px 5px gray;
-
+  height: 60px;
   font: {
     weight: 700;
   }
@@ -44,12 +47,13 @@
     }
 
     &.logo {
+      padding: 7.5px;
       position: absolute;
       top: 0;
       bottom: 0;
       margin: auto;
       color: $theme;
-      height: 60px;
+      height: 100%;
       display: inline-flex;
       align-items: center;
       max-width: 110px;
@@ -74,50 +78,16 @@
   }
 }
 
-@media screen and (max-width: 430px) {
-  .container {
-    .item {
-      &.logo {
-        height: 50px;
-      }
-    }
-  }
-}
-
-@media screen and (max-width: 390px) {
-  .container {
-    .item {
-      &.logo {
-        height: 40px;
-      }
-    }
-  }
-}
-
 @media screen and (max-width: 350px) {
   .container {
     gap: 15px;
-    padding: 20px 10px;
+    padding: {
+      left: 10px;
+      right: 10px;
+    }
 
     .wrapper-not-logo {
       gap: 10px;
-    }
-
-    .item {
-      padding: 5px;
-      &.logo {
-        height: 35px;
-      }
-    }
-  }
-}
-
-@media screen and (max-width: 300px) {
-  .container {
-    .item {
-      &.logo {
-        height: 30px;
-      }
     }
   }
 }
