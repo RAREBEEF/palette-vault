@@ -29,7 +29,9 @@ const Login = () => {
   const { value: pw, onChange: onPwChange } = useInput();
   const { value: pwCheck, onChange: onPwCheckChange } = useInput();
   const { value: displayName, onChange: onDisplayNameChange } = useInput();
+
   const [alert, setAlert] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   // 회원가입, 로그인 전환
   const onFormChange = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -52,6 +54,10 @@ const Login = () => {
   const onSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
+    if (loading) {
+      return;
+    }
+
     const auth = getAuth();
 
     //
@@ -64,6 +70,9 @@ const Login = () => {
         setAlert("비밀번호를 입력해 주세요.");
         return;
       }
+
+      setLoading(true);
+
       await signInWithEmailAndPassword(auth, email, pw)
         .then((userCredential) => {
           const user = userCredential.user;
@@ -98,6 +107,8 @@ const Login = () => {
         return;
       }
 
+      setLoading(true);
+
       await createUserWithEmailAndPassword(auth, email, pw)
         .then((userCredential) => {
           const user = userCredential.user;
@@ -121,7 +132,10 @@ const Login = () => {
       //
       // 비밀번호 재설정
     } else if (formAction === "pwReset") {
+      setLoading(true);
+
       const auth = getAuth();
+
       sendPasswordResetEmail(auth, email)
         .then(() => {
           setAlert("재설정 메일이 발송되었습니다.");
@@ -130,6 +144,8 @@ const Login = () => {
           setAlert("메일 발송에 실패했습니다. 다시 시도해 주세요.");
         });
     }
+
+    setLoading(false);
   };
 
   const onGoogleLogin = (e: React.MouseEvent<HTMLButtonElement>) => {

@@ -21,17 +21,12 @@ const New: React.FC<NewPropsType> = () => {
     },
     palettes: { lastLoad },
   } = useSelector((state: reduxStateType): reduxStateType => state);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const checkColor = useCheckColor();
   const checkError = useCheckError();
 
-  // <input type="color" /> ref
-  const colorPickerRef = useRef<HTMLInputElement>(null);
-
-  // 색상 배열
-  const [colors, setColors] = useState<Array<string>>([]);
-  // 색상 값
   const {
     value: colorValue,
     onChange: onColorValueChange,
@@ -43,6 +38,13 @@ const New: React.FC<NewPropsType> = () => {
     onChange: onPaletteNameChange,
     setValue: setPaletteName,
   } = useInput();
+
+  // <input type="color" /> ref
+  const colorPickerRef = useRef<HTMLInputElement>(null);
+  // 색상 배열
+  const [colors, setColors] = useState<Array<string>>([]);
+  // 색상 값
+  const [loading, setLoading] = useState<boolean>(false);
 
   const onAddColor = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -89,6 +91,10 @@ const New: React.FC<NewPropsType> = () => {
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (loading) {
+      return;
+    }
+
     if (colors.length === 0) {
       window.alert("색상을 1개 이상 추가해 주세요.");
       return;
@@ -96,6 +102,8 @@ const New: React.FC<NewPropsType> = () => {
       window.alert("팔레트 이름을 입력해 주세요.");
       return;
     }
+
+    setLoading(true);
 
     try {
       await addDoc(collection(getFirestore(firebase), "palettes"), {
@@ -113,6 +121,8 @@ const New: React.FC<NewPropsType> = () => {
     } catch (error: any) {
       window.alert(checkError(error.code));
     }
+
+    setLoading(false);
   };
 
   return (
