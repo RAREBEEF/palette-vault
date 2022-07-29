@@ -1,0 +1,25 @@
+@import "../var.scss";
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+
+  .img--logo {
+    max-width: 30vw;
+    max-height: 20vh;
+    animation: zoom-in-out 3s infinite ease-in-out;
+    @keyframes zoom-in-out {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+  }
+}

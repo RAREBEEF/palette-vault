@@ -1,6 +1,6 @@
-import styles from "./Loading.module.scss";
+import styles from "./LoadingLoadMore.module.scss";
 
-const Loading = () => {
+const LoadingLoadMore = () => {
   return (
     <div className={styles.container}>
       <p className={styles["text--loading"]}>로딩 중</p>
@@ -8,4 +8,4 @@ const Loading = () => {
   );
 };
 
-export default Loading;
+export default LoadingLoadMore;

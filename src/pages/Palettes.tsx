@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import Button from "../components/Button";
 import Footer from "../components/Footer";
-import Loading from "../components/Loading";
+import LoadingLoadMore from "../components/LoadingLoadMore";
 import Palette from "../components/Palette";
 import useInput from "../hooks/useInput";
 import { getPalettesThunk } from "../redux/modules/palettes";
@@ -164,7 +164,7 @@ const Palettes: React.FC<PalettesPropsType> = ({
         {(tab === 1 || (tab === 2 && myPalettesId.length !== 0)) && (
           <section className={styles["load-more"]}>
             {loading ? (
-              <Loading />
+              <LoadingLoadMore />
             ) : (
               <Button
                 text="더보기"

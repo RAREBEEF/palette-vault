@@ -12,7 +12,7 @@ import Login from "../pages/Login";
 import { getPalettesThunk } from "../redux/modules/palettes";
 import { useSelector } from "react-redux";
 import { reduxStateType } from "../types";
-import Loading from "./Loading";
+import LoadingInit from "./LoadingInit";
 import Detail from "../pages/Detail";
 import CopyAlert from "./CopyAlert";
 import ToTop from "./ToTop";
@@ -110,7 +110,7 @@ function App() {
           <Nav />
         </Router>
       ) : (
-        <Loading />
+        <LoadingInit />
       )}
       <CopyAlert copyAlertRef={copyAlertRef} />
       <ToTop />

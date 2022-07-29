@@ -17,6 +17,7 @@ import Footer from "../components/Footer";
 import useCheckError from "../hooks/useCheckError";
 import useInput from "../hooks/useInput";
 import logoImg from "../imgs/login-logo.png";
+import LoadingInit from "../components/LoadingInit";
 
 const Login = () => {
   const [formAction, setFormAction] = useState<"login" | "signUp" | "pwReset">(
@@ -156,7 +157,7 @@ const Login = () => {
     signInWithRedirect(auth, provider);
   };
 
-  return (
+  return !loading ? (
     <div className={styles.container}>
       <section className={styles["header-wrapper"]}>
         <Link to="/" className={styles["btn--back"]}>
@@ -257,6 +258,8 @@ const Login = () => {
 
       <Footer />
     </div>
+  ) : (
+    <LoadingInit />
   );
 };
 
