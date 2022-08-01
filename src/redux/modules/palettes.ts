@@ -8,8 +8,8 @@ import {
   limit,
   startAfter,
   Query,
-  onSnapshot,
   endAt,
+  getDocs,
 } from "firebase/firestore";
 import React from "react";
 
@@ -70,16 +70,27 @@ export const getPalettesThunk = (
         );
       }
 
-      onSnapshot(q, (querySnapshot) => {
+      await getDocs(q).then((docSnap) => {
         const palettesData: any = {};
-        const lastLoad = querySnapshot.docs[querySnapshot.docs.length - 1];
+        const lastLoad = docSnap.docs[docSnap.docs.length - 1];
 
-        querySnapshot.forEach((doc) => {
+        docSnap.forEach((doc) => {
           palettesData[doc.id] = { ...doc.data() };
         });
 
         dispatch(getPalettesSuccess(palettesData, lastLoad, refresh));
       });
+
+      // onSnapshot(q, (querySnapshot) => {
+      //   const palettesData: any = {};
+      //   const lastLoad = querySnapshot.docs[querySnapshot.docs.length - 1];
+
+      //   querySnapshot.forEach((doc) => {
+      //     palettesData[doc.id] = { ...doc.data() };
+      //   });
+
+      //   dispatch(getPalettesSuccess(palettesData, lastLoad, refresh));
+      // });
     } catch (error) {
       window.alert("팔레트를 불러오는데 실패하였습니다.");
       dispatch(getPalettesFail(error));

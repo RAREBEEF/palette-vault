@@ -13,11 +13,12 @@ import useCheckError from "../hooks/useCheckError";
 import { ProfilePropsType, reduxStateType } from "../types";
 import styles from "./Profile.module.scss";
 import useInput from "../hooks/useInput";
+import { getPalettesThunk } from "../redux/modules/palettes";
 
 const Profile: React.FC<ProfilePropsType> = ({ myPalettesId }) => {
   const {
     login: { userObj },
-    palettes: { data: palettes },
+    palettes: { data: palettes, lastLoad },
   } = useSelector((state: reduxStateType): reduxStateType => state);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -72,6 +73,7 @@ const Profile: React.FC<ProfilePropsType> = ({ myPalettesId }) => {
           });
         });
 
+      dispatch<any>(getPalettesThunk(lastLoad, true));
       setDisplayName("");
       setAlert("닉네임이 변경되었습니다.");
     } catch (error: any) {
