@@ -8,26 +8,17 @@ import useCheckPath from "../hooks/useCheckPath";
 
 const Nav = () => {
   const { isLoggedIn } = useSelector((state: any) => state.login);
+  const [init, setInit] = useState<boolean>(true);
   const location = useLocation();
   const navigate = useNavigate();
   const checkPath = useCheckPath();
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
 
   useEffect(() => {
-    console.log("useEffect");
-    window.addEventListener("beforeinstallprompt", (e) => {
-      // Prevent the mini-infobar from appearing on mobile
-      e.preventDefault();
-      // Stash the event so it can be triggered later.
-      setDeferredPrompt(e);
-      // Update UI notify the user they can install the PWA
+    if (init) {
       navigate("/install", { replace: true });
-      // Optionally, send analytics event that PWA install promo was shown.
-      console.log(`'beforeinstallprompt' event was fired.`);
-    });
-  }, [navigate]);
-
-  console.log(deferredPrompt);
+      setInit(false);
+    }
+  }, [init, navigate]);
 
   // url 체크
   useEffect(() => {
