@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import styles from "./Nav.module.scss";
@@ -11,25 +11,22 @@ const Nav = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const checkPath = useCheckPath();
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
 
   useEffect(() => {
-    // window.addEventListener("beforeinstallprompt", (e) => {
-    //   e.preventDefault();
-    //   //@ts-ignore
-    //   window.promptEvent = e;
-    //   navigate("/install", { replace: true });
-    // });
-    window.addEventListener("beforeinstallprompt", (event) => {
-      // Prevent the mini-infobar from appearing on mobile.
-      event.preventDefault();
-      console.log("👍", "beforeinstallprompt", event);
+    window.addEventListener("beforeinstallprompt", (e) => {
+      // Prevent the mini-infobar from appearing on mobile
+      e.preventDefault();
       // Stash the event so it can be triggered later.
-      //@ts-ignore
-      window.deferredPrompt = event;
-      // Remove the 'hidden' class from the install button container.
+      setDeferredPrompt(e);
+      // Update UI notify the user they can install the PWA
       navigate("/install", { replace: true });
+      // Optionally, send analytics event that PWA install promo was shown.
+      console.log(`'beforeinstallprompt' event was fired.`);
     });
   }, [navigate]);
+
+  console.log(deferredPrompt);
 
   // url 체크
   useEffect(() => {
