@@ -17,11 +17,7 @@ const Nav = () => {
       e.preventDefault();
       //@ts-ignore
       window.promptEvent = e;
-      if (window.matchMedia("(display-mode: standalone)").matches) {
-        return;
-      } else {
-        navigate("/install", { replace: true });
-      }
+      navigate("/install", { replace: true });
     });
   }, [navigate]);
 
