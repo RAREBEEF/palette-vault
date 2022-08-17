@@ -16,6 +16,7 @@ import LoadingInit from "./LoadingInit";
 import Detail from "../pages/Detail";
 import CopyAlert from "./CopyAlert";
 import ToTop from "./ToTop";
+import Install from "../pages/Install";
 
 function App() {
   const {
@@ -87,6 +88,7 @@ function App() {
       {init ? (
         <Router>
           <Routes>
+            <Route path="/install" element={<Install />} />
             <Route path="/login" element={<Login />} />
             <Route path="/new" element={<New />} />
             <Route

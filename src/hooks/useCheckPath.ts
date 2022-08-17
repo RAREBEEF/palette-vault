@@ -22,6 +22,7 @@ const useCheckPath = () => {
       path !== "/login" &&
       path !== "/profile" &&
       path !== "/new" &&
+      path !== "/install" &&
       !/^\/palette\//i.test(path)
     ) {
       toHome();

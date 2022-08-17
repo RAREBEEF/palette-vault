@@ -12,6 +12,19 @@ const Nav = () => {
   const navigate = useNavigate();
   const checkPath = useCheckPath();
 
+  useEffect(() => {
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      //@ts-ignore
+      window.promptEvent = e;
+      if (window.matchMedia("(display-mode: standalone)").matches) {
+        return;
+      } else {
+        navigate("/install", { replace: true });
+      }
+    });
+  }, [navigate]);
+
   // url 체크
   useEffect(() => {
     checkPath(location.pathname);

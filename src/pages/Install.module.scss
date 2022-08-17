@@ -1,0 +1,70 @@
+@import "./pages.scss";
+
+.main {
+  padding-top: 30px;
+  flex-grow: 1;
+  align-self: center;
+  width: 80vw;
+  min-width: $minWidth - 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10%;
+  section {
+    line-height: 25px;
+    word-break: keep-all;
+    width: 100%;
+    font: {
+      size: 16px;
+    }
+  }
+
+  .tutorial {
+    position: relative;
+    text-align: center;
+    border: 1px solid $theme;
+    border-radius: 15px;
+    padding: 10px 40px;
+    max-width: fit-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 200px;
+    margin-top: 15px;
+
+    h3 {
+      position: absolute;
+      width: fit-content;
+      height: 30px;
+      line-height: 30px;
+      background-color: white;
+      padding: 0px 5px;
+      top: -15px;
+      left: 15px;
+      color: $theme;
+      font: {
+        size: 16px;
+        weight: 700;
+      }
+    }
+
+    section {
+      text-align: start;
+      h4 {
+        font: {
+          size: 20px;
+          weight: 500;
+        }
+      }
+      li,
+      .link {
+        margin-left: 10px;
+      }
+    }
+  }
+
+  .link {
+    color: $theme;
+  }
+}
