@@ -36,6 +36,14 @@ const App: React.FC<AppPropsType> = ({ deferredPrompt }) => {
   // 복사 알림 ref
   const copyAlertRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      console.log("app");
+      console.log(e);
+    });
+  }, []);
+
   // 설치 여부 체크
   useEffect(() => {
     console.log(deferredPrompt);

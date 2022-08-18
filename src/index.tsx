@@ -18,8 +18,6 @@ let deferredPrompt = null;
 window.addEventListener("beforeinstallprompt", (e) => {
   e.preventDefault();
   deferredPrompt = e;
-
-  console.log(e);
 });
 
 root.render(
