@@ -83,7 +83,9 @@ const Nav: React.FC<NavPropsType> = ({ isInstalled }) => {
         <NavLink
           to={isLoggedIn ? "/profile" : "/login"}
           className={({ isActive }: any): string =>
-            isActive ? classNames(styles.active, styles.item) : styles.item
+            isActive
+              ? classNames(styles.active, styles.item, styles.login)
+              : classNames(styles.item, styles.login)
           }
         >
           {isLoggedIn ? "프로필" : "로그인"}
