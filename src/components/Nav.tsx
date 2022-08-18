@@ -28,7 +28,9 @@ const Nav: React.FC<NavPropsType> = ({ isInstalled }) => {
       "(display-mode: standalone)"
     ).matches;
 
-    if (!isInstalled) {
+    if (isInstalled) {
+      return;
+    } else if (!isInstalled) {
       navigate("/install", { replace: true });
       setInit(true);
     } else if (!isStandalone) {
