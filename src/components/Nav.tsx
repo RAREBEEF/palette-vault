@@ -20,7 +20,18 @@ const Nav: React.FC<NavPropsType> = ({ isInstalled }) => {
   }, [checkPath, isLoggedIn, location, navigate]);
 
   useEffect(() => {
-    if (!init && !isInstalled) {
+    if (init) {
+      return;
+    }
+
+    const isStandalone = window.matchMedia(
+      "(display-mode: standalone)"
+    ).matches;
+
+    if (!isInstalled) {
+      navigate("/install", { replace: true });
+      setInit(true);
+    } else if (!isStandalone) {
       navigate("/install", { replace: true });
       setInit(true);
     }
