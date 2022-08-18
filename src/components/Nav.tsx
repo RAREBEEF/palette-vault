@@ -63,8 +63,8 @@ const Nav: React.FC<NavPropsType> = ({ isInstalled }) => {
             to="/install"
             className={({ isActive }: any): string =>
               isActive
-                ? classNames(styles.active, styles.item, styles.new)
-                : classNames(styles.item, styles.new)
+                ? classNames(styles.active, styles.item, styles.install)
+                : classNames(styles.item, styles.install)
             }
           >
             설치

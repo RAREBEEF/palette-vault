@@ -66,28 +66,17 @@
       }
     }
 
+    &.new,
     &.install {
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      // margin-right: 50px;
-      .img--install {
-        height: 50%;
-      }
-      margin: 0px 10px;
-    }
-
-    &.new {
-      opacity: 1;
       background-color: $theme;
       color: white;
       &:hover {
         filter: brightness(1.2);
       }
+
       &.active {
-        pointer-events: none;
-        opacity: 0;
+        color: $theme;
+        background-color: white;
       }
     }
   }
