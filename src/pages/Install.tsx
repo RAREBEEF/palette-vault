@@ -9,15 +9,16 @@ const Install: React.FC<InstallPropsType> = ({ deferredPrompt }) => {
   const onInstallClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    console.log(deferredPrompt);
-
     if (!deferredPrompt) {
+      window.alert(
+        `설치에 실패하였습니다.\n크롬 브라우저를 이용하시거나 다른 방법으로 설치를 진행해 주세요.`
+      );
       return;
     }
 
     deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    console.log(`User response to the install prompt: ${outcome}`);
+
+    await deferredPrompt.userChoice;
   };
 
   return (
@@ -50,18 +51,24 @@ const Install: React.FC<InstallPropsType> = ({ deferredPrompt }) => {
           를 클릭하여 건너뛸 수 있습니다.
         </section>
         <section className={styles.tutorial}>
-          <h3>튜토리얼</h3>
-          <Button text="설치" onClick={onInstallClick} classes={["Install"]} />
-          <div className={styles.or}>혹은</div>
+          <h3>설치 방법</h3>
           <section>
-            <h4>iOS safari</h4>
+            <h4>크롬 브라우저</h4>
+            <Button
+              text="설치하기"
+              onClick={onInstallClick}
+              classes={["Install"]}
+            />
+          </section>
+          <section>
+            <h4>iOS 사파리</h4>
             <ol>
               <li>1. 공유 버튼 클릭</li>
               <li>2. 홈 화면에 추가 클릭</li>
             </ol>
           </section>
           <section>
-            <h4>Android or Desktop</h4>
+            <h4>안드로이드 or 데스크탑</h4>
             <a
               className={styles.link}
               href="https://support.google.com/chrome/answer/9658361?hl=ko&co=GENIE.Platform%3DAndroid&oco=0"

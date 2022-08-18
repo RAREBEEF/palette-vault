@@ -40,7 +40,7 @@
       color: $theme;
     }
 
-    &:not(.new, .logo) {
+    &:not(.new, .logo, .install) {
       &:hover {
         color: lightgray;
       }
@@ -61,6 +61,18 @@
       .img--logo {
         height: inherit;
       }
+    }
+
+    &.install {
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      // margin-right: 50px;
+      .img--install {
+        height: 50%;
+      }
+      margin: 0px 10px;
     }
 
     &.new {

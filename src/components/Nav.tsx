@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import styles from "./Nav.module.scss";
@@ -9,6 +9,7 @@ import { NavPropsType } from "../types";
 
 const Nav: React.FC<NavPropsType> = ({ isInstalled }) => {
   const { isLoggedIn } = useSelector((state: any) => state.login);
+  const [init, setInit] = useState<boolean>(false);
   const location = useLocation();
   const navigate = useNavigate();
   const checkPath = useCheckPath();
@@ -17,6 +18,13 @@ const Nav: React.FC<NavPropsType> = ({ isInstalled }) => {
   useEffect(() => {
     checkPath(location.pathname);
   }, [checkPath, isLoggedIn, location, navigate]);
+
+  useEffect(() => {
+    if (!init && isInstalled) {
+      navigate("/install", { replace: true });
+      setInit(true);
+    }
+  }, [init, isInstalled, navigate]);
 
   return (
     <nav className={styles.container}>
@@ -36,16 +44,6 @@ const Nav: React.FC<NavPropsType> = ({ isInstalled }) => {
       </NavLink>
 
       <div className={styles["wrapper-not-logo"]}>
-        {!isInstalled && (
-          <NavLink
-            to="/install"
-            className={({ isActive }: any): string =>
-              isActive ? classNames(styles.active, styles.item) : styles.item
-            }
-          >
-            설치
-          </NavLink>
-        )}
         <NavLink
           to={isLoggedIn ? "/new" : "/login"}
           className={({ isActive }: any): string =>

@@ -5,7 +5,7 @@ export interface InstallPropsType {
   deferredPrompt: any;
 }
 export interface NavPropsType {
-  isInstalled: any;
+  isInstalled: boolean;
 }
 export interface CopyAlertPropsType {
   copyAlertRef: any;

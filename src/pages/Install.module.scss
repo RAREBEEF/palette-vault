@@ -25,7 +25,7 @@
     text-align: center;
     border: 1px solid $theme;
     border-radius: 15px;
-    padding: 10px 40px;
+    padding: 30px 40px 10px;
     max-width: fit-content;
     margin-top: 15px;
 
@@ -45,15 +45,11 @@
       }
     }
 
-    .or {
-      margin: 20px auto;
-      color: gray;
-    }
-
     & > section {
       text-align: start;
       margin-bottom: 20px;
       h4 {
+        margin-bottom: 10px;
         font: {
           size: 20px;
           weight: 500;

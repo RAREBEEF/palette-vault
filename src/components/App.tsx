@@ -27,8 +27,7 @@ const App = () => {
 
   const appRef = useRef<HTMLDivElement>(null);
 
-  // install 여부
-  const [isInstalled, setIsInstalled] = useState<boolean>(false);
+  // beforeinstallprompt
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   // init
   const [init, setInit] = useState<boolean>(false);
@@ -43,16 +42,6 @@ const App = () => {
       setDeferredPrompt(e);
     });
   }, []);
-
-  // 설치 여부 체크
-  useEffect(() => {
-    console.log(deferredPrompt);
-    if (deferredPrompt) {
-      setIsInstalled(true);
-    } else {
-      setIsInstalled(false);
-    }
-  }, [deferredPrompt]);
 
   // init
   useEffect(() => {
@@ -132,7 +121,7 @@ const App = () => {
               }
             />
           </Routes>
-          <Nav isInstalled={isInstalled} />
+          <Nav isInstalled={!deferredPrompt} />
         </Router>
       ) : (
         <LoadingInit />
