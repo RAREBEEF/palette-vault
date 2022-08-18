@@ -20,6 +20,8 @@ window.addEventListener("beforeinstallprompt", (e) => {
   deferredPrompt = e;
 });
 
+console.log(deferredPrompt);
+
 root.render(
   <React.StrictMode>
     <Provider store={store}>
