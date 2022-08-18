@@ -11,14 +11,14 @@ import { login } from "../redux/modules/logIn";
 import Login from "../pages/Login";
 import { getPalettesThunk } from "../redux/modules/palettes";
 import { useSelector } from "react-redux";
-import { reduxStateType } from "../types";
+import { AppPropsType, reduxStateType } from "../types";
 import LoadingInit from "./LoadingInit";
 import Detail from "../pages/Detail";
 import CopyAlert from "./CopyAlert";
 import ToTop from "./ToTop";
 import Install from "../pages/Install";
 
-function App() {
+const App: React.FC<AppPropsType> = ({ deferredPrompt }) => {
   const {
     login: { isLoggedIn, userObj },
     palettes: { data: palettes },
@@ -27,12 +27,23 @@ function App() {
 
   const appRef = useRef<HTMLDivElement>(null);
 
+  // install 화면
+  const [isInstalled, setIsInstalled] = useState<boolean>(false);
   // init
   const [init, setInit] = useState<boolean>(false);
   // 내 팔레트 id
   const [myPalettesId, setMyPalettesId] = useState<Array<string>>([]);
   // 복사 알림 ref
   const copyAlertRef = useRef<HTMLDivElement>(null);
+
+  // 설치 여부 체크
+  useEffect(() => {
+    if (deferredPrompt) {
+      setIsInstalled(true);
+    } else {
+      setIsInstalled(false);
+    }
+  }, [deferredPrompt]);
 
   // init
   useEffect(() => {
@@ -88,7 +99,10 @@ function App() {
       {init ? (
         <Router>
           <Routes>
-            <Route path="/install" element={<Install />} />
+            <Route
+              path="/install"
+              element={<Install deferredPrompt={deferredPrompt} />}
+            />
             <Route path="/login" element={<Login />} />
             <Route path="/new" element={<New />} />
             <Route
@@ -109,7 +123,7 @@ function App() {
               }
             />
           </Routes>
-          <Nav />
+          <Nav isInstalled={isInstalled} />
         </Router>
       ) : (
         <LoadingInit />
@@ -118,6 +132,6 @@ function App() {
       <ToTop />
     </div>
   );
-}
+};
 
 export default App;

@@ -13,20 +13,17 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 
+let deferredPrompt = null;
+
 window.addEventListener("beforeinstallprompt", (e) => {
-  // Prevent the mini-infobar from appearing on mobile
   e.preventDefault();
-  // Stash the event so it can be triggered later.
-  // Update UI notify the user they can install the PWA
-  // Optionally, send analytics event that PWA install promo was shown.
-  console.log(`'beforeinstallprompt' event was fired.`);
-  console.log(e);
+  deferredPrompt = e;
 });
 
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <App deferredPrompt={deferredPrompt} />
     </Provider>
   </React.StrictMode>
 );

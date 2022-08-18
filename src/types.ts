@@ -1,6 +1,15 @@
 import React from "react";
 
 // PROPS
+export interface AppPropsType {
+  deferredPrompt: any;
+}
+export interface InstallPropsType {
+  deferredPrompt: any;
+}
+export interface NavPropsType {
+  isInstalled: any;
+}
 export interface CopyAlertPropsType {
   copyAlertRef: any;
 }

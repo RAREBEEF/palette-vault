@@ -1,8 +1,19 @@
+import React from "react";
 import { Link } from "react-router-dom";
+import Button from "../components/Button";
 import Footer from "../components/Footer";
+import { InstallPropsType } from "../types";
 import styles from "./Install.module.scss";
 
-const Install = () => {
+const Install: React.FC<InstallPropsType> = ({ deferredPrompt }) => {
+  const onInstallClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    console.log(`User response to the install prompt: ${outcome}`);
+  };
+
   return (
     <div className={styles.container}>
       <section className={styles["header-wrapper"]}>
@@ -26,10 +37,6 @@ const Install = () => {
           수 있습니다.
           <br />
           <br />
-          이 페이지는 설치 여부에 상관없이 출력되며 차후 버전에서는 설치 후
-          출력되지 않도록 개선할 예정입니다.
-          <br />
-          <br />
           아래 튜토리얼을 따라 설치를 진행하거나{" "}
           <Link to="/" className={styles.link}>
             웹으로 계속하기
@@ -38,6 +45,8 @@ const Install = () => {
         </section>
         <section className={styles.tutorial}>
           <h3>튜토리얼</h3>
+          <Button text="설치" onClick={onInstallClick} classes={["Install"]} />
+          <div className={styles.or}>혹은</div>
           <section>
             <h4>iOS safari</h4>
             <ol>

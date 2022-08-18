@@ -27,10 +27,6 @@
     border-radius: 15px;
     padding: 10px 40px;
     max-width: fit-content;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    height: 200px;
     margin-top: 15px;
 
     h3 {
@@ -49,8 +45,14 @@
       }
     }
 
-    section {
+    .or {
+      margin: 20px auto;
+      color: gray;
+    }
+
+    & > section {
       text-align: start;
+      margin-bottom: 20px;
       h4 {
         font: {
           size: 20px;
