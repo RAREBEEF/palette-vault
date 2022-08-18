@@ -35,6 +35,9 @@
     border-radius: 5px;
     word-break: keep-all;
     transition: all 0.2s;
+    font: {
+      size: 16px;
+    }
 
     &.active {
       color: $theme;
@@ -99,7 +102,18 @@
     }
 
     .wrapper-not-logo {
-      gap: 10px;
+      // gap: 5px;
+      .item {
+        padding: {
+          top: 7px;
+          left: 7px;
+          right: 7px;
+          bottom: 8.5px;
+        }
+        font: {
+          size: 13px;
+        }
+      }
     }
   }
 }

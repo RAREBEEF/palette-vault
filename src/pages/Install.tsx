@@ -53,7 +53,7 @@ const Install: React.FC<InstallPropsType> = ({ deferredPrompt }) => {
         <section className={styles.tutorial}>
           <h3>설치 방법</h3>
           <section>
-            <h4>크롬 브라우저</h4>
+            <h4>Chrome일 경우</h4>
             <Button
               text="설치하기"
               onClick={onInstallClick}
@@ -61,14 +61,13 @@ const Install: React.FC<InstallPropsType> = ({ deferredPrompt }) => {
             />
           </section>
           <section>
-            <h4>iOS 사파리</h4>
+            <h4>iOS Safari일 경우</h4>
             <ol>
               <li>1. 공유 버튼 클릭</li>
               <li>2. 홈 화면에 추가 클릭</li>
             </ol>
           </section>
           <section>
-            <h4>안드로이드 or 데스크탑</h4>
             <a
               className={styles.link}
               href="https://support.google.com/chrome/answer/9658361?hl=ko&co=GENIE.Platform%3DAndroid&oco=0"
@@ -77,7 +76,6 @@ const Install: React.FC<InstallPropsType> = ({ deferredPrompt }) => {
             >
               설치 튜토리얼
             </a>
-            을 따라 진행
           </section>
         </section>
       </section>
