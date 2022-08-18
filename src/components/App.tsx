@@ -11,14 +11,14 @@ import { login } from "../redux/modules/logIn";
 import Login from "../pages/Login";
 import { getPalettesThunk } from "../redux/modules/palettes";
 import { useSelector } from "react-redux";
-import { AppPropsType, reduxStateType } from "../types";
+import { reduxStateType } from "../types";
 import LoadingInit from "./LoadingInit";
 import Detail from "../pages/Detail";
 import CopyAlert from "./CopyAlert";
 import ToTop from "./ToTop";
 import Install from "../pages/Install";
 
-const App: React.FC<AppPropsType> = ({ deferredPrompt }) => {
+const App = () => {
   const {
     login: { isLoggedIn, userObj },
     palettes: { data: palettes },
@@ -27,8 +27,9 @@ const App: React.FC<AppPropsType> = ({ deferredPrompt }) => {
 
   const appRef = useRef<HTMLDivElement>(null);
 
-  // install 화면
+  // install 여부
   const [isInstalled, setIsInstalled] = useState<boolean>(false);
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   // init
   const [init, setInit] = useState<boolean>(false);
   // 내 팔레트 id
@@ -39,8 +40,7 @@ const App: React.FC<AppPropsType> = ({ deferredPrompt }) => {
   useEffect(() => {
     window.addEventListener("beforeinstallprompt", (e) => {
       e.preventDefault();
-      console.log("app");
-      console.log(e);
+      setDeferredPrompt(e);
     });
   }, []);
 

@@ -13,17 +13,10 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 
-let deferredPrompt = null;
-
-window.addEventListener("beforeinstallprompt", (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-});
-
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App deferredPrompt={deferredPrompt} />
+      <App />
     </Provider>
   </React.StrictMode>
 );
