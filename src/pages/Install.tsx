@@ -8,7 +8,7 @@ import styles from "./Install.module.scss";
 const Install: React.FC<InstallPropsType> = ({ deferredPrompt }) => {
   const onInstallClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-
+    console.log(deferredPrompt);
     deferredPrompt.prompt();
     const { outcome } = await deferredPrompt.userChoice;
     console.log(`User response to the install prompt: ${outcome}`);

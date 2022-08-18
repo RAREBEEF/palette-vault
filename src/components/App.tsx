@@ -38,6 +38,7 @@ const App: React.FC<AppPropsType> = ({ deferredPrompt }) => {
 
   // 설치 여부 체크
   useEffect(() => {
+    console.log(deferredPrompt);
     if (deferredPrompt) {
       setIsInstalled(true);
     } else {
