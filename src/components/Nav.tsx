@@ -14,17 +14,6 @@ const Nav = () => {
   const checkPath = useCheckPath();
 
   useEffect(() => {
-    window.addEventListener("beforeinstallprompt", (e) => {
-      // Prevent the mini-infobar from appearing on mobile
-      e.preventDefault();
-      // Stash the event so it can be triggered later.
-      // Update UI notify the user they can install the PWA
-      // Optionally, send analytics event that PWA install promo was shown.
-      console.log(e);
-    });
-  }, []);
-
-  useEffect(() => {
     if (init) {
       navigate("/install", { replace: true });
       setInit(false);
