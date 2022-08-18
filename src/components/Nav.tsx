@@ -20,7 +20,7 @@ const Nav: React.FC<NavPropsType> = ({ isInstalled }) => {
   }, [checkPath, isLoggedIn, location, navigate]);
 
   useEffect(() => {
-    if (!init && isInstalled) {
+    if (!init && !isInstalled) {
       navigate("/install", { replace: true });
       setInit(true);
     }
