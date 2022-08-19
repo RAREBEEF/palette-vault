@@ -20,7 +20,7 @@ const Nav: React.FC<NavPropsType> = ({ isInstalled }) => {
     checkPath(location.pathname);
   }, [checkPath, isLoggedIn, location, navigate]);
 
-  // 앱 설치 감지
+  // 앱 설치가 감지되면 설치 버튼 숨기고 홈으로 이동
   useEffect(() => {
     const appinstalledListner = () => {
       setShowInstall(false);
@@ -40,13 +40,21 @@ const Nav: React.FC<NavPropsType> = ({ isInstalled }) => {
       return;
     }
 
+    // beforeinstallprompt가 안먹히는 safari에서
+    // 설치 여부 체크 및 설치 유도를 위해
+    // 스탠드얼론이 아닐 경우 설치 버튼 출력
     const standalone = window.matchMedia("(display-mode: standalone)").matches;
 
     if (!standalone) {
       setShowInstall(true);
     }
 
-    if (!isInstalled) {
+    // beforeinstallprompt를 지원하는 크롬의 경우
+    // 설치가 되어있을 경우 설치 버튼 숨김
+    // 설치가 안되어있을 경우 설치 페이지로 이동
+    if (isInstalled) {
+      setShowInstall(false);
+    } else {
       navigate("/install", { replace: true });
       setInit(true);
     }

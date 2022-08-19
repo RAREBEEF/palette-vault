@@ -26,8 +26,8 @@
     border: 1px solid $theme;
     border-radius: 15px;
     padding: 30px 40px 10px;
-    max-width: fit-content;
     margin-top: 30px;
+    display: flex;
 
     h3 {
       position: absolute;
@@ -46,8 +46,7 @@
     }
 
     & > section {
-      text-align: start;
-      margin-bottom: 20px;
+      margin: 0px 10px 30px;
       h4 {
         margin-bottom: 10px;
         font: {
@@ -64,5 +63,11 @@
 
   .link {
     color: $theme;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .tutorial {
+    flex-direction: column;
   }
 }
