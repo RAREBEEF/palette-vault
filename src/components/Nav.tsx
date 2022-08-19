@@ -26,11 +26,9 @@ const Nav: React.FC<NavPropsType> = ({ isInstalled }) => {
       return;
     }
 
-    const isStandalone = window.matchMedia(
-      "(display-mode: standalone)"
-    ).matches;
+    const standalone = window.matchMedia("(display-mode: standalone)").matches;
 
-    if (isStandalone) {
+    if (standalone) {
       setIsStandalone(true);
     }
 
