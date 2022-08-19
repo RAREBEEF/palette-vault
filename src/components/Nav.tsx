@@ -41,7 +41,7 @@ const Nav: React.FC<NavPropsType> = ({ isInstalled }) => {
 
     const standalone = window.matchMedia("(display-mode: standalone)").matches;
 
-    if (standalone) {
+    if (!standalone) {
       setShowInstall(true);
     }
 
