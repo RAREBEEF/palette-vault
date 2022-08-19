@@ -37,10 +37,19 @@ const App = () => {
   const copyAlertRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    window.addEventListener("beforeinstallprompt", (e) => {
+    const beforeinstallpomptListner = (e: any) => {
       e.preventDefault();
       setDeferredPrompt(e);
-    });
+    };
+
+    window.addEventListener("beforeinstallprompt", beforeinstallpomptListner);
+
+    return () => {
+      window.removeEventListener(
+        "beforeinstallprompt",
+        beforeinstallpomptListner
+      );
+    };
   }, []);
 
   // init

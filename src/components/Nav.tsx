@@ -10,7 +10,7 @@ import { NavPropsType } from "../types";
 const Nav: React.FC<NavPropsType> = ({ isInstalled }) => {
   const { isLoggedIn } = useSelector((state: any) => state.login);
   const [init, setInit] = useState<boolean>(false);
-  const [isStandalone, setIsStandalone] = useState<boolean>(false);
+  const [showInstall, setShowInstall] = useState<boolean>(false);
   const location = useLocation();
   const navigate = useNavigate();
   const checkPath = useCheckPath();
@@ -19,6 +19,19 @@ const Nav: React.FC<NavPropsType> = ({ isInstalled }) => {
   useEffect(() => {
     checkPath(location.pathname);
   }, [checkPath, isLoggedIn, location, navigate]);
+
+  // 앱 설치 감지
+  useEffect(() => {
+    const appinstalledListner = () => {
+      setShowInstall(false);
+    };
+
+    window.addEventListener("appinstalled", appinstalledListner);
+
+    return () => {
+      window.removeEventListener("appinstalled", appinstalledListner);
+    };
+  }, []);
 
   // PWA 체크
   useEffect(() => {
@@ -29,7 +42,7 @@ const Nav: React.FC<NavPropsType> = ({ isInstalled }) => {
     const standalone = window.matchMedia("(display-mode: standalone)").matches;
 
     if (standalone) {
-      setIsStandalone(true);
+      setShowInstall(true);
     }
 
     if (!isInstalled) {
@@ -56,7 +69,7 @@ const Nav: React.FC<NavPropsType> = ({ isInstalled }) => {
       </NavLink>
 
       <div className={styles["wrapper-not-logo"]}>
-        {!isStandalone && (
+        {showInstall && (
           <NavLink
             to="/install"
             className={({ isActive }: any): string =>
