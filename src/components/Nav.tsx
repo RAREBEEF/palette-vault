@@ -58,13 +58,11 @@ const Nav: React.FC<NavPropsType> = ({ isInstalled }) => {
       return;
     }
 
-    // beforeinstallprompt를 지원하는 브라우저의 경우
-    // 설치가 되어있을 경우 설치 버튼을 숨기고
+    // beforeinstallprompt를 지원하는 브라우저는
     // 설치가 안되어있을 경우 설치 버튼 출력 및 첫 로드 시 설치 페이지로 이동
 
-    if (isInstalled) {
-      setShowInstall(false);
-    } else {
+    if (!isInstalled) {
+      setShowInstall(true);
       navigate("/install", { replace: true });
       setInit(true);
     }
