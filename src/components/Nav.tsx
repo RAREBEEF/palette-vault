@@ -6,8 +6,10 @@ import styles from "./Nav.module.scss";
 import logoImg from "../imgs/logo512.png";
 import useCheckPath from "../hooks/useCheckPath";
 import { NavPropsType } from "../types";
+import useCheckBrowser from "../hooks/useCheckBrowser";
 
 const Nav: React.FC<NavPropsType> = ({ isInstalled }) => {
+  const checkBrowser = useCheckBrowser();
   const { isLoggedIn } = useSelector((state: any) => state.login);
   const [init, setInit] = useState<boolean>(false);
   const [showInstall, setShowInstall] = useState<boolean>(false);
@@ -40,25 +42,33 @@ const Nav: React.FC<NavPropsType> = ({ isInstalled }) => {
       return;
     }
 
-    // beforeinstallprompt가 안먹히는 safari에서
-    // 설치 여부 체크 및 설치 유도를 위해
-    // 스탠드얼론이 아닐 경우 설치 버튼 출력
-    const standalone = window.matchMedia("(display-mode: standalone)").matches;
+    // beforeinstallprompt를 지원하지 않는 브라우저의 경우
+    // 스탠드얼론으로 실행되지 않았을 경우 설치 버튼을 출력
+    const browser = checkBrowser(window.navigator.userAgent);
 
-    if (!standalone) {
-      setShowInstall(true);
+    if (["Firefox", "Safari", "Internet Explorer"].indexOf(browser) !== -1) {
+      const standalone = window.matchMedia(
+        "(display-mode: standalone)"
+      ).matches;
+
+      if (!standalone) {
+        setShowInstall(true);
+      }
+
+      return;
     }
 
-    // beforeinstallprompt를 지원하는 크롬의 경우
-    // 설치가 되어있을 경우 설치 버튼 숨김
-    // 설치가 안되어있을 경우 설치 페이지로 이동
+    // beforeinstallprompt를 지원하는 브라우저의 경우
+    // 설치가 되어있을 경우 설치 버튼을 숨기고
+    // 설치가 안되어있을 경우 설치 버튼 출력 및 첫 로드 시 설치 페이지로 이동
+
     if (isInstalled) {
       setShowInstall(false);
     } else {
       navigate("/install", { replace: true });
       setInit(true);
     }
-  }, [init, isInstalled, navigate]);
+  }, [checkBrowser, init, isInstalled, navigate]);
 
   return (
     <nav className={styles.container}>
