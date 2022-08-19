@@ -24,6 +24,7 @@ const Nav: React.FC<NavPropsType> = ({ isInstalled }) => {
   useEffect(() => {
     const appinstalledListner = () => {
       setShowInstall(false);
+      navigate("/", { replace: true });
     };
 
     window.addEventListener("appinstalled", appinstalledListner);
@@ -31,7 +32,7 @@ const Nav: React.FC<NavPropsType> = ({ isInstalled }) => {
     return () => {
       window.removeEventListener("appinstalled", appinstalledListner);
     };
-  }, []);
+  }, [navigate]);
 
   // PWA 체크
   useEffect(() => {
