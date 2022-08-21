@@ -4,6 +4,10 @@ import { useSelector } from "react-redux";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import styles from "./Nav.module.scss";
 import logoImg from "../imgs/logo512.png";
+import homeIcon from "../icons/home-solid.svg";
+import addIcon from "../icons/add-solid.svg";
+import loginIcon from "../icons/login-solid.svg";
+import profileIcon from "../icons/profile-solid.svg";
 import useCheckPath from "../hooks/useCheckPath";
 import { NavPropsType } from "../types";
 import useCheckBrowser from "../hooks/useCheckBrowser";
@@ -12,6 +16,7 @@ const Nav: React.FC<NavPropsType> = ({ isInstalled }) => {
   const checkBrowser = useCheckBrowser();
   const { isLoggedIn } = useSelector((state: any) => state.login);
   const [init, setInit] = useState<boolean>(false);
+  const [isStandalone, setIsStandalone] = useState<boolean>(false);
   const [showInstall, setShowInstall] = useState<boolean>(false);
   const location = useLocation();
   const navigate = useNavigate();
@@ -42,15 +47,17 @@ const Nav: React.FC<NavPropsType> = ({ isInstalled }) => {
       return;
     }
 
+    const standalone = window.matchMedia("(display-mode: standalone)").matches;
+
+    if (standalone) {
+      setIsStandalone(true);
+    }
+
     // beforeinstallprompt를 지원하지 않는 브라우저의 경우
     // 스탠드얼론으로 실행되지 않았을 경우 설치 버튼을 출력
     const browser = checkBrowser(window.navigator.userAgent);
 
     if (["Firefox", "Safari", "Internet Explorer"].indexOf(browser) !== -1) {
-      const standalone = window.matchMedia(
-        "(display-mode: standalone)"
-      ).matches;
-
       if (!standalone) {
         setShowInstall(true);
       }
@@ -60,7 +67,6 @@ const Nav: React.FC<NavPropsType> = ({ isInstalled }) => {
 
     // beforeinstallprompt를 지원하는 브라우저는
     // 설치가 안되어있을 경우 설치 버튼 출력 및 첫 로드 시 설치 페이지로 이동
-
     if (!isInstalled) {
       setShowInstall(true);
       navigate("/install", { replace: true });
@@ -68,7 +74,56 @@ const Nav: React.FC<NavPropsType> = ({ isInstalled }) => {
     }
   }, [checkBrowser, init, isInstalled, navigate]);
 
-  return (
+  return isStandalone ? (
+    <nav className={classNames(styles.container, styles.standalone)}>
+      <NavLink
+        to="/"
+        className={({ isActive }: any): string =>
+          isActive ? classNames(styles.active, styles.item) : styles.item
+        }
+      >
+        <div className={styles["item-inner-wraper"]}>
+          <img className={styles.icon} src={homeIcon} alt="Home" />
+          <h4 className={styles["item-text"]}>홈</h4>
+        </div>
+      </NavLink>
+      <NavLink
+        to={isLoggedIn ? "/new" : "/login"}
+        className={({ isActive }: any): string =>
+          isLoggedIn
+            ? isActive
+              ? classNames(styles.active, styles.item, styles.new)
+              : classNames(styles.item, styles.new)
+            : classNames(styles.item, styles.new)
+        }
+      >
+        <div className={styles["item-inner-wraper"]}>
+          <img className={styles.icon} src={addIcon} alt="New" />
+          <h4 className={styles["item-text"]}>새 팔레트</h4>
+        </div>
+      </NavLink>
+      <NavLink
+        to={isLoggedIn ? "/profile" : "/login"}
+        className={({ isActive }: any): string =>
+          isActive
+            ? classNames(styles.active, styles.item, styles.login)
+            : classNames(styles.item, styles.login)
+        }
+      >
+        {isLoggedIn ? (
+          <div className={styles["item-inner-wraper"]}>
+            <img className={styles.icon} src={profileIcon} alt="Profile" />
+            <h4 className={styles["item-text"]}>프로필</h4>
+          </div>
+        ) : (
+          <div className={styles["item-inner-wraper"]}>
+            <img className={styles.icon} src={loginIcon} alt="Login" />
+            <h4 className={styles["item-text"]}>로그인</h4>
+          </div>
+        )}
+      </NavLink>
+    </nav>
+  ) : (
     <nav className={styles.container}>
       <NavLink
         to="/"

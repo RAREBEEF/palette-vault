@@ -29,3 +29,9 @@
     width: 30px;
   }
 }
+
+@media screen and (display-mode: standalone) {
+  .container {
+    bottom: 100px;
+  }
+}

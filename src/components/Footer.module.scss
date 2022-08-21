@@ -26,3 +26,11 @@
     }
   }
 }
+
+@media screen and (display-mode: standalone) {
+  .footer {
+    padding: {
+      bottom: 120px;
+    }
+  }
+}

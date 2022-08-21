@@ -11,10 +11,7 @@
   gap: 30px;
   background-color: white;
   color: gray;
-  padding: {
-    left: 20px;
-    right: 20px;
-  }
+  padding: 10px 20px;
   border-bottom: 0.5px solid lightgray;
   box-shadow: 0px 1px 5px gray;
   height: 60px;
@@ -102,6 +99,45 @@
         }
         font: {
           size: 13px;
+        }
+      }
+    }
+  }
+}
+
+.standalone {
+  top: auto;
+  bottom: 0;
+  padding: 0;
+  justify-content: center;
+  gap: 0;
+  height: 80px;
+  .item {
+    text-align: center;
+    width: 0px;
+    flex-grow: 1;
+    height: 30px;
+
+    background: none !important;
+    color: $theme !important;
+    border-radius: 0;
+    height: 100%;
+    padding: {
+      top: 10px;
+      bottom: 20px;
+    }
+    &:hover {
+      filter: brightness(1.2);
+    }
+
+    .item-inner-wraper {
+      height: 50px;
+      .icon {
+        height: 30px;
+      }
+      .item-text {
+        font: {
+          size: 14px;
         }
       }
     }

@@ -88,3 +88,9 @@
     }
   }
 }
+
+@media screen and (display-mode: standalone) {
+  .container {
+    padding-top: 0;
+  }
+}
