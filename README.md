@@ -59,6 +59,21 @@ HEX 혹은 RGB 값을 직접 입력하거나 color picker를 통해 팔레트에
 
 <br/>
 
+## 4. PWA
+![](https://velog.velcdn.com/images/drrobot409/post/ad591166-a041-446f-9689-57c9565979e3/image.png)
+
+크롬으로 웹사이트에 접속 시 웹사이트가 크롬의 PWA 기준에 부합하면 접속 시 설치 버튼이 출력되고 `beforeinstallprompt` 이벤트의 호출이 가능해지는데, 이러한 크롬의 기준에 부합하도록 앱을 업데이트하였다.  
+아직 온전한 PWA라고 하기에는 푸시알림도 없고 오프라인에서도 작동하지 않지만 우선은 설치가 가능하도록 한다는 점에 초점을 맞춘 업데이트이다. 
+
+install 페이지를 새롭게 추가하여 앱의 설치를 유도하였다. 
+크롬 브라우저와 같이 `beforeinstallprompt` 를 지원하는 브라우저의 경우 해당 이벤트로 설치 여부를 체크하여 install 페이지로 자동 리디릭션 되도록 하였고 safari처럼 지원하지 않을 경우 디스플레이 모드의 `standalone` 여부를 체크하여 네비게이션바에 설치 페이지 이동 버튼을 추가하였다. 
+
+또한 모바일 환경의 `standalone` 에서는 네비게이션바의 위치를 하단으로 옮기고 스타일에 변경점을 줘서 사용자가 앱을 사용하고 있다는 느낌을 받을 수 있도록 하였다. 
+
+아쉬운 점은 안드로이드 기기가 없는 관계로 더 다양한 환경에서 의도대로 작동하는지 테스트 해보지 못한 점이다.
+
+<br/>
+
 ---
 
 # 스타일
@@ -79,7 +94,7 @@ HEX 혹은 RGB 값을 직접 입력하거나 color picker를 통해 팔레트에
 ![](https://velog.velcdn.com/images/drrobot409/post/205f8c92-1339-48ae-8071-bfbd81a28106/image.png)
 ![](https://velog.velcdn.com/images/drrobot409/post/3250f2ed-3d44-43a8-9281-789b740e2ff4/image.png)
 ![](https://velog.velcdn.com/images/drrobot409/post/fe9480df-f44b-4895-a166-f7640ce26398/image.png)
-
+![](https://velog.velcdn.com/images/drrobot409/post/34f96022-2b07-416e-aea3-5a2916169e9b/image.png)
 
 
 
