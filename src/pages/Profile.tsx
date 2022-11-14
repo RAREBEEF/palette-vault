@@ -16,6 +16,7 @@ import useInput from "../hooks/useInput";
 import { getPalettesThunk } from "../redux/modules/palettes";
 
 const Profile: React.FC<ProfilePropsType> = ({ myPalettesId }) => {
+  const testerId = "bpt6SbLXrRRfipMHDJBrVcxQ5X32";
   const {
     login: { userObj },
     palettes: { data: palettes, lastLoad },
@@ -46,6 +47,11 @@ const Profile: React.FC<ProfilePropsType> = ({ myPalettesId }) => {
     const user = getAuth().currentUser;
 
     if (!user) {
+      return;
+    }
+
+    if (user.uid === testerId) {
+      window.alert("테스트 계정의 정보는 변경하실 수 없습니다.");
       return;
     }
 
@@ -105,6 +111,11 @@ const Profile: React.FC<ProfilePropsType> = ({ myPalettesId }) => {
       return;
     }
 
+    if (user.uid === testerId) {
+      window.alert("테스트 계정의 정보는 변경하실 수 없습니다.");
+      return;
+    }
+
     updatePassword(user, pw)
       .then(() => {
         setAlert("비밀번호가 변경되었습니다.");
@@ -132,6 +143,15 @@ const Profile: React.FC<ProfilePropsType> = ({ myPalettesId }) => {
     e.preventDefault();
 
     const user = getAuth().currentUser;
+
+    if (!user) {
+      return;
+    }
+
+    if (user.uid === testerId) {
+      window.alert("테스트 계정의 정보는 변경하실 수 없습니다.");
+      return;
+    }
 
     const ok = window.confirm("계정을 탈퇴하시겠습니까?");
 

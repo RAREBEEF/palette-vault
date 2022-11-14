@@ -64,6 +64,12 @@ const Login = () => {
     //
     // 로그인
     if (formAction === "login") {
+      let isTest = false;
+
+      if (email === "test" && pw === "test") {
+        isTest = true;
+      }
+
       if (email.length === 0) {
         setAlert("이메일을 입력해 주세요.");
         return;
@@ -74,7 +80,11 @@ const Login = () => {
 
       setLoading(true);
 
-      await signInWithEmailAndPassword(auth, email, pw)
+      await signInWithEmailAndPassword(
+        auth,
+        isTest ? "test@test.com" : email,
+        isTest ? "test@test.com" : pw
+      )
         .then((userCredential) => {
           const user = userCredential.user;
 
