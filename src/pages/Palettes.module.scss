@@ -78,6 +78,8 @@
     }
 
     .palettes {
+      width: 100%;
+      min-height: 50vh;
       text-align: start;
       display: flex;
       justify-content: center;
@@ -96,18 +98,6 @@
         bottom: 30px;
         left: 20px;
         right: 20px;
-      }
-    }
-  }
-}
-
-@media screen and (max-width: 700px) {
-  .container {
-    .tabs {
-      .palettes {
-        .empty {
-          margin-top: -50px;
-        }
       }
     }
   }

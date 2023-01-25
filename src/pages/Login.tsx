@@ -4,7 +4,7 @@ import {
   GoogleAuthProvider,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
-  signInWithRedirect,
+  signInWithPopup,
   updateProfile,
 } from "firebase/auth";
 import React, { useState } from "react";
@@ -164,7 +164,7 @@ const Login = () => {
 
     const provider = new GoogleAuthProvider();
     const auth = getAuth();
-    signInWithRedirect(auth, provider);
+    signInWithPopup(auth, provider);
   };
 
   return !loading ? (
