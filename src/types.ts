@@ -37,6 +37,7 @@ export interface PalettePropsType {
 export interface reduxStateType {
   login: reduxLoginStateType;
   palettes: reduxPalettesStateType;
+  palette: reduxPaletteStateType;
 }
 
 export interface paletteType {
@@ -62,4 +63,10 @@ export interface reduxPalettesStateType {
   loading: boolean;
   error: null | Error;
   lastLoad: any;
+}
+
+export interface reduxPaletteStateType {
+  data: any;
+  loading: boolean;
+  error: null | Error;
 }

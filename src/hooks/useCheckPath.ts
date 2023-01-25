@@ -6,7 +6,6 @@ const useCheckPath = () => {
   const navigate = useNavigate();
   const {
     login: { isLoggedIn },
-    palettes: { data: palettes },
   } = useSelector((state: reduxStateType): reduxStateType => state);
 
   const toHome = () => {
@@ -21,11 +20,6 @@ const useCheckPath = () => {
       toLogin();
     } else if (isLoggedIn && path === "/login") {
       toHome();
-    } else if (
-      /^\/palette\//i.test(path) &&
-      !palettes[path.replace(/^\/palette\//i, "")]
-    ) {
-      toHome();
     } else {
       return;
     }
@@ -35,27 +29,3 @@ const useCheckPath = () => {
 };
 
 export default useCheckPath;
-
-// const checkPath = (path: string) => {
-//   if (
-//     path !== "/" &&
-//     path !== "/login" &&
-//     path !== "/profile" &&
-//     path !== "/new" &&
-//     path !== "/install" &&
-//     !/^\/palette\//i.test(path)
-//   ) {
-//     toHome();
-//   } else if (!isLoggedIn && (path === "/new" || path === "/profile")) {
-//     toLogin();
-//   } else if (isLoggedIn && path === "/login") {
-//     toHome();
-//   } else if (
-//     /^\/palette\//i.test(path) &&
-//     !palettes[path.replace(/^\/palette\//i, "")]
-//   ) {
-//     toHome();
-//   } else {
-//     return;
-//   }
-// };

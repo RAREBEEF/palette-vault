@@ -80,17 +80,6 @@ export const getPalettesThunk = (
 
         dispatch(getPalettesSuccess(palettesData, lastLoad, refresh));
       });
-
-      // onSnapshot(q, (querySnapshot) => {
-      //   const palettesData: any = {};
-      //   const lastLoad = querySnapshot.docs[querySnapshot.docs.length - 1];
-
-      //   querySnapshot.forEach((doc) => {
-      //     palettesData[doc.id] = { ...doc.data() };
-      //   });
-
-      //   dispatch(getPalettesSuccess(palettesData, lastLoad, refresh));
-      // });
     } catch (error) {
       window.alert("팔레트를 불러오는데 실패하였습니다.");
       dispatch(getPalettesFail(error));

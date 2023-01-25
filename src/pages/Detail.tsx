@@ -7,18 +7,21 @@ import styles from "./Detail.module.scss";
 import Button from "../components/Button";
 import useDelete from "../hooks/useDelete";
 import useCopy from "../hooks/useCopy";
+import { useDispatch } from "react-redux";
+import { getPaletteThunk } from "../redux/modules/palette";
 
 const Detail: React.FC<DetailPropsType> = ({ copyAlertRef }) => {
   const {
     login: { userObj },
     palettes: { data: palettes },
+    palette: { data: singlePaltte },
   } = useSelector((state: reduxStateType): reduxStateType => state);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const params = useParams();
   const deletePalete = useDelete();
   const copy = useCopy(copyAlertRef);
-  // 출력할 팔레트 정보
-  const [palette, setPalette] = useState<paletteType>();
+  const [paletteData, setPaletteData] = useState<paletteType | null>(null);
 
   // id 체크, 복사할 팔레트 state에 저장
   useEffect(() => {
@@ -26,8 +29,13 @@ const Detail: React.FC<DetailPropsType> = ({ copyAlertRef }) => {
       return;
     }
 
-    setPalette(palettes[params.id]);
-  }, [navigate, palettes, params]);
+    if (!palettes[params.id]) {
+      dispatch<any>(getPaletteThunk(params.id));
+      setPaletteData(singlePaltte);
+    } else {
+      setPaletteData(palettes[params.id]);
+    }
+  }, [dispatch, palettes, params.id, singlePaltte]);
 
   // 색상 복사
   const onColorClick = (e: React.MouseEvent<HTMLLIElement>, color: string) => {
@@ -48,17 +56,17 @@ const Detail: React.FC<DetailPropsType> = ({ copyAlertRef }) => {
     }
   };
 
-  return palette ? (
+  return paletteData ? (
     <div className={styles.container}>
       <section className={styles["header-wrapper"]}>
         <Link to="/" className={styles["btn--back"]}>
           {`<`} 홈으로
         </Link>
-        <h2 className={styles.header}>{palette.name}</h2>
+        <h2 className={styles.header}>{paletteData.name}</h2>
       </section>
 
       <section className={styles.main}>
-        {userObj.id === palette.creator && (
+        {userObj.id === paletteData.creator && (
           <Button
             text="삭제"
             onClick={onDeletePalette}
@@ -67,7 +75,7 @@ const Detail: React.FC<DetailPropsType> = ({ copyAlertRef }) => {
         )}
         <div className={styles["palette"]}>
           <ul className={styles["colors-wrapper"]}>
-            {palette.colors.map((color, i) => {
+            {paletteData.colors.map((color, i) => {
               return (
                 <li
                   onClick={(e) => {
